@@ -23,7 +23,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- JQVMap -->
   <link rel="stylesheet" href="<?= base_url()?>/template/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url()?>/template/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= base_url()?>/template/adminlte/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?= base_url()?>/template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
