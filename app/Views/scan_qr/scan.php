@@ -1,0 +1,56 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+<?php if (session()->getFlashData('pesan')) { ?>
+    <script>
+        alert('<?= session()->getFlashData('pesan') ?>')
+    </script>
+<?php } ?>
+
+<div class="content">
+        <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                    <!-- Default box -->
+                        <div class="card card-primary card-outline mt-3">
+                                <?php
+                                    $attributes = array('id' => 'button');
+                                    echo form_open('scan/absen', $attributes) 
+                                ?>
+                                <textarea hidden="" name="qrcode" id="qrcode" readonly></textarea>
+                                <span hidden> <input type="submit" id="button" value="Submit"> </span>
+                            <div class="card-body table-responsive"> 
+                                <h3>Scan QR</h3>
+                                <video id="preview" style="height: 300px; width: 400px;"></video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</div>
+        <?php echo form_close(); ?>
+
+
+<script type="text/javascript">
+    let scanner = new Instascan.Scanner({
+        video: document.getElementById('preview')
+    });
+    scanner.addListener('scan', function(content) {
+        // menampilkan hasil dari scan qr code
+        console.log(content);
+        if (content) {
+            // alert('QR Code Scanned');
+            $('#qrcode').val(content);
+        }
+        $('#button').submit();
+    });
+    Instascan.Camera.getCameras().then(function(cameras) {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('camera tidak di temukan');
+        }
+    }).catch(function(e) {
+        console.error(e);
+    });
+</script>
