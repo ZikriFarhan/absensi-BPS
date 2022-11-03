@@ -17,15 +17,21 @@ class Scan extends BaseController
 
     public function index()
     {
-        $data=[
-			'title' => 'Scan QR',
-			'isi'	=> 'scan_qr/scan',
-		];
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
+        $data = [
+            'title' => 'Scan QR',
+            'isi'    => 'scan_qr/scan',
+        ];
         echo view('layout_admin/v_wrapper', $data);
     }
 
     public function absen()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $input_nim = $this->request->getPost('qrcode');
         $tgl = date('Y-m-d');
         $jam = date('H:i:s');

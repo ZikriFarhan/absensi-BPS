@@ -20,11 +20,9 @@ class Bidang extends BaseController
             'title' => 'Data Bidang',
             'data' => $this->bidangModel->findAll(),
             'isi' => 'bidang/data_bidang'
-
         ];
 
-        echo view('layout_admin/v_wrapper',$data);
-
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     public function show($id)
@@ -48,6 +46,9 @@ class Bidang extends BaseController
 
     public function new()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Tambah Data Bidang',
             'isi' => 'bidang/new'
@@ -57,6 +58,9 @@ class Bidang extends BaseController
 
     public function create()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_bidang' => $this->request->getPost('nama_bidang')
         ];
@@ -83,6 +87,9 @@ class Bidang extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->bidangModel->id_exists($id)) {
             $data = [
                 'title' => 'Edit Data Bidang',
@@ -102,6 +109,9 @@ class Bidang extends BaseController
 
     public function update($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_bidang' => $this->request->getPost('nama_bidang')
         ];
@@ -128,17 +138,23 @@ class Bidang extends BaseController
 
     public function edit_form()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $this->update($id);
         $data = [
             'title' => 'Edit Bidang',
             'bidang' => 'bidang/edit_form/edit_form'
         ];
         // echo json_encode($data);
-        echo view('bidang/edit_form/index',$data);
+        echo view('bidang/edit_form/index', $data);
     }
 
     public function delete($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->bidangModel->id_exists($id)) {
             $this->bidangModel->delete($id);
             $data = [

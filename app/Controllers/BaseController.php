@@ -23,11 +23,11 @@ use Psr\Log\LoggerInterface;
 abstract class BaseController extends Controller
 {
 	/**
-     * Instance of the main Request object.
-     *
-     * @var CLIRequest|IncomingRequest
-     */
-    protected $request;
+	 * Instance of the main Request object.
+	 *
+	 * @var CLIRequest|IncomingRequest
+	 */
+	protected $request;
 	/**
 	 * An array of helpers to be loaded automatically upon
 	 * class instantiation. These helpers will be available
@@ -46,6 +46,8 @@ abstract class BaseController extends Controller
 	 */
 	public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
 	{
+		$this->helpers = array_merge($this->helpers, ['setting', 'form']);
+
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
 
@@ -53,5 +55,20 @@ abstract class BaseController extends Controller
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
+
+		// set username and role to session
+		if (auth()->loggedIn()) {
+			$this->session = \Config\Services::session();
+			$users = model('UserModel');
+			$role = (auth()->user()->getGroups()[0]);
+			$id = (session()->get()['user']['id']);
+			$username = ($users->findById($id)->toArray()['username']);
+			$userdata = [
+				'username' => $username,
+				'role' => $role,
+			];
+
+			$this->session->set($userdata);
+		} //*
 	}
 }

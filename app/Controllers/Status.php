@@ -16,6 +16,9 @@ class Status extends BaseController
 
     public function index()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Data Status',
             'status' => $this->statusModel->findAll()
@@ -25,6 +28,9 @@ class Status extends BaseController
 
     public function show($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->statusModel->id_exists($id)) {
             $data = [
                 'title' => 'Data Status',
@@ -43,6 +49,9 @@ class Status extends BaseController
 
     public function new()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Form Tambah Status'
         ];
@@ -51,6 +60,9 @@ class Status extends BaseController
 
     public function create()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_status' => $this->request->getPost('nama_status')
         ];
@@ -74,6 +86,9 @@ class Status extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->statusModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Status',
@@ -92,7 +107,9 @@ class Status extends BaseController
 
     public function update($id)
     {
-
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_status' => $this->request->getPost('nama_status')
         ];
@@ -116,6 +133,9 @@ class Status extends BaseController
 
     public function delete($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->statusModel->id_exists($id)) {
             $this->statusModel->delete($id);
             $data = [
