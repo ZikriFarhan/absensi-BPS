@@ -16,6 +16,9 @@ class Kehadiran extends BaseController
 
     public function index()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Data Kehadiran',
             'data' => $this->kehadiranModel->findAll(),
@@ -26,6 +29,9 @@ class Kehadiran extends BaseController
 
     public function show($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->kehadiranModel->id_exists($id)) {
             $data = [
                 'title' => 'Data Kehadiran',
@@ -44,6 +50,9 @@ class Kehadiran extends BaseController
 
     public function new()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Form Tambah Kehadiran'
         ];
@@ -52,6 +61,9 @@ class Kehadiran extends BaseController
 
     public function create()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_kehadiran' => $this->request->getPost('nama_kehadiran')
         ];
@@ -75,6 +87,9 @@ class Kehadiran extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->kehadiranModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Kehadiran',
@@ -93,6 +108,9 @@ class Kehadiran extends BaseController
 
     public function update($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_kehadiran' => $this->request->getPost('nama_kehadiran')
         ];
@@ -116,6 +134,9 @@ class Kehadiran extends BaseController
 
     public function delete($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->kehadiranModel->id_exists($id)) {
             $this->kehadiranModel->delete($id);
             $data = [

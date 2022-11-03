@@ -43,6 +43,9 @@ class Universitas extends BaseController
 
     public function new()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Form Tambah Universitas'
         ];
@@ -51,6 +54,9 @@ class Universitas extends BaseController
 
     public function create()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_universitas' => $this->request->getPost('nama_universitas')
         ];
@@ -74,6 +80,9 @@ class Universitas extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->univModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Universitas',
@@ -92,7 +101,9 @@ class Universitas extends BaseController
 
     public function update($id)
     {
-
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama_universitas' => $this->request->getPost('nama_universitas')
         ];
@@ -116,6 +127,9 @@ class Universitas extends BaseController
 
     public function delete($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->univModel->id_exists($id)) {
             $this->univModel->delete($id);
             $data = [

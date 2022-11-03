@@ -27,7 +27,7 @@ class Pesertamagang extends BaseController
 
         ];
         // echo json_encode($data);
-        echo view('layout_admin/v_wrapper',$data);
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     public function show($id)
@@ -53,17 +53,23 @@ class Pesertamagang extends BaseController
 
     public function new()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Form Tambah Peserta Magang',
             'univ' => $this->universitasModel->findAll(),
             'bidang' => $this->bidangModel->findAll(),
-            'isi'	=> 'peserta/new' 
+            'isi'    => 'peserta/new'
         ];
         echo view('layout_admin/v_wrapper', $data);
     }
 
     public function create()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'nama' => $this->request->getPost('nama'),
             'nim' => $this->request->getPost('nim'),
@@ -92,6 +98,9 @@ class Pesertamagang extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->magangModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Peserta',
@@ -102,7 +111,6 @@ class Pesertamagang extends BaseController
             ];
 
             echo view('layout_admin/v_wrapper', $data);
-
         } else {
             $data = [
                 'status' => 404,
@@ -115,6 +123,9 @@ class Pesertamagang extends BaseController
 
     public function update($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'id_bidang' => $this->request->getPost('id_bidang'),
             'id_universitas' => $this->request->getPost('id_universitas'),
@@ -143,6 +154,9 @@ class Pesertamagang extends BaseController
 
     public function delete($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->magangModel->id_exists($id)) {
             $this->magangModel->delete($id);
             $data = [
@@ -152,7 +166,6 @@ class Pesertamagang extends BaseController
             ];
 
             return redirect()->to('/pesertamagang')->with('success', $data['message']);
-
         } else {
             $data = [
                 'status' => 404,
@@ -168,10 +181,10 @@ class Pesertamagang extends BaseController
         $data = [
             'title' => 'Data Peserta Magang',
             'peserta' => $this->magangModel->getKeyword(),
-            'isi'	=> 'PKL/data_pkl'
+            'isi'    => 'PKL/data_pkl'
         ];
         // echo json_encode($data);
-        echo view('layout_admin/v_wrapper',$data);
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     // Tombol Opsi Pada Tabel
@@ -211,5 +224,4 @@ class Pesertamagang extends BaseController
             echo json_encode($output);
         }
     }
-
 }
