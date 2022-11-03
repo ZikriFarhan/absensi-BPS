@@ -22,7 +22,7 @@
             <div class="row mb-2">
                 <h1 class="m-0">Daftar Peserta</h1>
                 <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
-                <a href="/presensi/new" class="btn btn-primary mb-2">Tambah</a>
+                <a href="pesertamagang/new" class="btn btn-primary mb-2">Tambah</a>
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>
