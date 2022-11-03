@@ -6,28 +6,28 @@ class Home extends BaseController
 {
 	public function index()
 	{
-		$data=[
+		$data = [
 			'title' => 'Home',
 			'isi'	=> 'v_home',
 		];
-		echo view('layout_admin/v_wrapper',$data);
+		echo view('layout_admin/v_wrapper', $data);
 	}
 
 	public function guest()
 	{
-		$data=[
+		$data = [
 			'title' => 'Home',
 			'isi'	=> 'v_home',
 		];
-		echo view('layout/v_wrapper',$data);
+		echo view('layout/v_wrapper', $data);
 	}
 
 	public function data_pkl()
 	{
-		$data=[
+		$data = [
 			'title' => 'PKL',
 			'isi'	=> 'pkl/data_pkl',
 		];
-		echo view('layout/v_wrapper',$data);
+		echo view('layout/v_wrapper', $data);
 	}
 }

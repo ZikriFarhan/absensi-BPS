@@ -52,6 +52,9 @@ class Presensi extends BaseController
 
     public function new()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Form Tambah Presensi',
             'peserta' => $this->pesertaModel->findAll(),
@@ -59,11 +62,14 @@ class Presensi extends BaseController
             'kehadiran' => $this->kehadiranModel->findAll(),
             'isi' => 'presensi/new'
         ];
-       echo view('layout_admin/v_wrapper', $data);
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     public function create()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'id_kehadiran' => $this->request->getPost('id_kehadiran'),
             'nim' => $this->request->getPost('nim'),
@@ -101,6 +107,9 @@ class Presensi extends BaseController
 
     public function edit($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->presensiModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Presensi',
@@ -123,6 +132,9 @@ class Presensi extends BaseController
 
     public function update($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'id_kehadiran' => $this->request->getPost('id_kehadiran'),
             'nim' => $this->request->getPost('nim'),
@@ -161,6 +173,9 @@ class Presensi extends BaseController
 
     public function delete($id)
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         if ($this->presensiModel->id_exists($id)) {
             $this->presensiModel->delete($id);
             $data = [
