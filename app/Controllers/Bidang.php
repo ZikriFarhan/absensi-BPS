@@ -136,12 +136,24 @@ class Bidang extends BaseController
             return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
         }
         if ($this->bidangModel->id_exists($id)) {
-            $this->bidangModel->delete($id);
-            $data = [
-                'status' => 200,
-                'message' => 'Data berhasil dihapus'
-            ];
-            return redirect()->to('/bidang')->with('success', $data['message']);
+            try {
+                $delete = $this->bidangModel->delete($id);
+                if ($delete) {
+                    $data = [
+                        'status' => 200,
+                        'message' => 'Data berhasil dihapus'
+                    ];
+                    return redirect()->to('/bidang')->with('success', $data['message']);
+                } else {
+                    throw new \Exception();
+                }
+            } catch (\Exception $e) {
+                $data = [
+                    'status' => 500,
+                    'message' => 'Data tidak dapat dihapus karena sedang digunakan'
+                ];
+                return redirect()->to('/bidang')->with('error', $data['message']);
+            }
         } else {
             $data = [
                 'status' => 404,
