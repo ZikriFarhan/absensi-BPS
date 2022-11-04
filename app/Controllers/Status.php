@@ -66,9 +66,7 @@ class Status extends BaseController
         $data = [
             'nama_status' => $this->request->getPost('nama_status')
         ];
-
         $validate = $this->statusModel->insert($data);
-
         if ($validate) {
             $data = [
                 'status' => 200,
@@ -113,9 +111,7 @@ class Status extends BaseController
         $data = [
             'nama_status' => $this->request->getPost('nama_status')
         ];
-
         $validate = $this->statusModel->update($id, $data);
-
         if ($validate) {
             $data = [
                 'status' => 200,
