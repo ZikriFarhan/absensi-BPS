@@ -161,4 +161,15 @@ class Pesertamagang extends BaseController
             echo view('errors/html/error_404', $data);
         }
     }
+
+    public function search()
+    {
+        $keyword = $this->request->getPost('keyword');
+        $data = [
+            'data' => $this->magangModel->getKeyword($keyword),
+            'isi' => 'peserta/index',
+            'title' => 'search',
+        ];
+        echo view('layout_admin/v_wrapper', $data);
+    }
 }

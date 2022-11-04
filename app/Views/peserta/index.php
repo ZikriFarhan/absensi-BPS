@@ -24,6 +24,10 @@
                 <h1 class="m-0">Daftar Peserta</h1>
                 <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
                 <a href="/pesertamagang/new" class="btn btn-primary mb-2">Tambah</a>
+                <?php echo form_open('pesertamagang/search') ?>
+                <input type="text" name="keyword" class="form-control mr-2" placeholder="Search">
+                <button type="submit" class="btn btn-success ml-6" style="display:none;">Cari</button>
+                <?php echo form_close() ?>
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>

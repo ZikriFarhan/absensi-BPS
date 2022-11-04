@@ -64,9 +64,9 @@ class PesertaMagangModel extends Model
         $builder->join('bidang', 'bidang.id = pesertamagang.id_bidang', 'inner');
         $builder->join('universitas', 'universitas.id = pesertamagang.id_universitas', 'inner');
         $builder->like('nim', $keyword);
-        $builder->or_like('nama', $keyword);
-        $builder->or_like('bidang.nama_bidang', $keyword);
-        $builder->or_like('universitas.nama_universitas', $keyword);
+        $builder->orLike('nama', $keyword);
+        $builder->orLike('bidang.nama_bidang', $keyword);
+        $builder->orLike('universitas.nama_universitas', $keyword);
         $query = $builder->get()->getResultArray();
         return $query;
     }
