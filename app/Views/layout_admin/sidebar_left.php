@@ -29,41 +29,49 @@
             <p>Dashboard</p>
           </a>
         </li>
-        <li class="nav-item has-treeview menu-close">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-database"></i>
-            <p>
-              Master Data
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="<?php echo base_url('pesertamagang') ?>" class="nav-link ">
-                <i class="far fa fa-users nav-icon"></i>
-                <p>Daftar Intern</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<?php echo base_url('bidang') ?>" class="nav-link ">
-                <i class="fas fa-building nav-icon"></i>
-                <p>Daftar Bidang</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+
+        <?php if (session('role') === 'admin') : ?>
+          <li class="nav-item has-treeview menu-close">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-database"></i>
+              <p>
+                Master Data
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo base_url('pesertamagang') ?>" class="nav-link ">
+                  <i class="far fa fa-users nav-icon"></i>
+                  <p>Daftar Intern</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url('bidang') ?>" class="nav-link ">
+                  <i class="fas fa-building nav-icon"></i>
+                  <p>Daftar Bidang</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        <?php endif ?>
+
         <li class="nav-item">
           <a href="<?php echo base_url('kartuabsen') ?>" class="nav-link">
             <i class="nav-icon fas fa-qrcode"></i>
             <p>Ambil Kode QR</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="<?php echo base_url('scan') ?>" class="nav-link">
-            <i class="nav-icon fa fa-search-plus"></i>
-            <p>Scan QR</p>
-          </a>
-        </li>
+
+        <?php if (session('role') === 'admin') : ?>
+          <li class="nav-item">
+            <a href="<?php echo base_url('scan') ?>" class="nav-link">
+              <i class="nav-icon fa fa-search-plus"></i>
+              <p>Scan QR</p>
+            </a>
+          </li>
+        <?php endif ?>
+
         <li class="nav-item">
           <a href="<?php echo base_url('presensi/index') ?>" class="nav-link">
             <i class="far fa fa-history nav-icon"></i>

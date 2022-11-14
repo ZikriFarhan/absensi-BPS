@@ -94,3 +94,13 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+<script>
+    $(document).ready(function() {
+        $('#tabel-bidang').DataTable({});
+    });
+</script>
