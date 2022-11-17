@@ -27,5 +27,7 @@
 <script src="<?= base_url()?>/template/adminlte/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<!-- JQuery DataTable Css -->
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 </body>
 </html>

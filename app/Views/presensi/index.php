@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 <style>
     @media print{
       @page {
@@ -6,21 +7,29 @@
       .btn,
       .last,
       footer,
-      a#debug-icon-link{
+      a#debug-icon-link,
+      label,
+      .dataTables_info,
+      .dataTables_paginate,
+      .paging_simple_numbers
+      {
       display: none;
       }
     }
 </style>
+
 <div class="container-fluid">
 <!-- Content Wrapper. Contains page content -->
 
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-0" style="display:flex; flex-direction:right;">
                 <h1 class="m-0">Histori Absensi</h1>
-                <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
-                <a href="/presensi/new" class="btn btn-primary mb-2">Tambah</a>
+                    <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-3" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
+                    <a href="/pesertamagang/new" class="btn btn-primary mb-2">Tambah</a>
+
+            
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>
@@ -34,7 +43,7 @@
                     <!-- Default box -->
                     <div class="card card-primary card-outline">
                         <div class="card-body table-responsive">
-                            <table id="tabel-bidang" class="table table-bordered table-striped">
+                            <table id="histori" class="table table-bordered table-striped js-basic-example dataTable">
                                 <thead>
                                     <tr>
                                     <th>No</th>
@@ -48,7 +57,6 @@
                                     <th class="last">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
                                     <tbody>
                                     <?php $i = 1; ?>
                                     <?php foreach ($data as $row) : ?>
@@ -63,12 +71,14 @@
                                             <td><?= $row['nama_status']; ?></td>
                                             <td class="last">
                                                 <a href="/presensi/show/<?= $row['id']; ?>" class="btn btn-primary mr-1 ml-1">Detail</a>
+                                                <?php if (session()->get('role') == 'admin') {?>
                                                 <a href="/presensi/edit/<?= $row['id']; ?>" class="btn btn-warning mr-1 ml-1">Edit</a>
                                                 <form action="/presensi/delete/<?= $row['id']; ?>" method="post" class="d-inline">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button type="submit" class="btn btn-danger mr-1 ml-1" onclick="return confirm('Apakah anda yakin?');">Delete</button>
                                                 </form>
+                                                <?php } ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -94,4 +104,14 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+<script>
+    $(document).ready(function () {
+    $('#histori').DataTable();
+});
+</script>
     
