@@ -16,10 +16,13 @@ class Bidang extends BaseController
 
     public function index()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Data Bidang',
             'data' => $this->bidangModel->findAll(),
-            'isi' => 'bidang/data_bidang'
+            'isi' => 'bidang/index'
         ];
 
         echo view('layout_admin/v_wrapper', $data);
@@ -183,4 +186,17 @@ class Bidang extends BaseController
                 ";
         return $link;
     }
+
+    // public function search(){
+    //     $keyword = $this->request->getPost('keyword');
+    //     $data = [
+    //         'data'=> $this->bidangModel->getKeyword($keyword),
+    //         'isi' =>'bidang/data_bidang',
+    //         'title'=> 'search',
+    //     ];
+        
+
+    //     echo view('layout_admin/v_wrapper', $data);
+        
+    // }
 }
