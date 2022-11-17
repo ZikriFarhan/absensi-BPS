@@ -11,7 +11,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="<?= base_url() ?>/template/adminlte/img/2042_crop.png" class="img-circle elevation-2" alt="User Image">
+        <img src="<?= base_url() ?>/template/adminlte/img/blue_user.png" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
         <a href="#" class="d-block"><?= session()->get('username') ?></a>
@@ -29,6 +29,7 @@
             <p>Dashboard</p>
           </a>
         </li>
+      <?php if (session()->get('role') == 'admin') {?>
         <li class="nav-item has-treeview menu-close">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
@@ -52,24 +53,33 @@
             </li>
           </ul>
         </li>
+      <?php } ?>
         <li class="nav-item">
           <a href="<?php echo base_url('kartuabsen') ?>" class="nav-link">
             <i class="nav-icon fas fa-qrcode"></i>
             <p>Ambil Kode QR</p>
           </a>
         </li>
+        <?php if (session()->get('role') == 'admin') {?>
         <li class="nav-item">
           <a href="<?php echo base_url('scan') ?>" class="nav-link">
             <i class="nav-icon fa fa-search-plus"></i>
             <p>Scan QR</p>
           </a>
         </li>
+        <?php } ?>
         <li class="nav-item">
           <a href="<?php echo base_url('presensi/index') ?>" class="nav-link">
             <i class="far fa fa-history nav-icon"></i>
             <p>Histori Absensi</p>
           </a>
-        </li>
+        <!-- </li>
+                <li class="nav-item">
+          <a href="<?php echo base_url('pesertamagang/dataTable') ?>" class="nav-link">
+            <i class="far fa fa-history nav-icon"></i>
+            <p>Data Table</p>
+          </a>
+        </li> -->
         <li class="nav-item"><b>
             <a href="<?php echo base_url('logout') ?>" class="nav-link text-danger">
               <i class="nav-icon fas fa-sign-out-alt"></i>
