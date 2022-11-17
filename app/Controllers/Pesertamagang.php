@@ -174,18 +174,19 @@ class Pesertamagang extends BaseController
             echo view('errors/html/error_404', $data);
         }
     }
-    // fitur search
-    public function search()
-    {
-        $keyword = $this->input->post('keyword');
-        $data = [
-            'title' => 'Data Peserta Magang',
-            'peserta' => $this->magangModel->getKeyword(),
-            'isi'    => 'PKL/data_pkl'
-        ];
-        // echo json_encode($data);
-        echo view('layout_admin/v_wrapper', $data);
-    }
+    // // fitur search
+    //     public function search(){
+    //     $keyword = $this->request->getPost('keyword');
+    //     $data = [
+    //         'data'=> $this->magangModel->getKeyword($keyword),
+    //         'isi' =>'peserta/index',
+    //         'title'=> 'search',
+    //     ];
+        
+
+    //     echo view('layout_admin/v_wrapper', $data);
+        
+    // }
 
     // Tombol Opsi Pada Tabel
     private function _action_admin($id_magang)
@@ -224,4 +225,5 @@ class Pesertamagang extends BaseController
             echo json_encode($output);
         }
     }
+
 }
