@@ -29,7 +29,10 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "post-install-cmd": [
+            "chmod -R 777 public/"
+        ]
     },
     "support": {
         "forum": "http://forum.codeigniter.com/",
