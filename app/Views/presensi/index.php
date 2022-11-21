@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 <style>
     @media print {
         @page {
@@ -7,18 +8,23 @@
         .btn,
         .last,
         footer,
-        a#debug-icon-link {
+        a#debug-icon-link,
+        label,
+        .dataTables_info,
+        .dataTables_paginate,
+        .paging_simple_numbers {
             display: none;
         }
     }
 </style>
+
 <div class="container-fluid">
     <!-- Content Wrapper. Contains page content -->
 
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-0" style="display:flex; flex-direction:right;">
                 <h1 class="m-0">Histori Absensi</h1>
                 <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
                 <?php if (session('role') === 'admin') : ?>
@@ -37,7 +43,7 @@
                     <!-- Default box -->
                     <div class="card card-primary card-outline">
                         <div class="card-body table-responsive">
-                            <table id="tabel-bidang" class="table table-bordered table-striped">
+                            <table id="histori" class="table table-bordered table-striped js-basic-example dataTable">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -99,9 +105,16 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+<script>
+    $(document).ready(function() {
+        $('#histori').DataTable();
+    });
+</script>
+
 
 <script>
     $(document).ready(function() {

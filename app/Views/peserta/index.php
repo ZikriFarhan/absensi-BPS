@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 <style>
     @media print {
         @page {
@@ -7,7 +8,11 @@
         .btn,
         .last,
         footer,
-        a#debug-icon-link {
+        a#debug-icon-link,
+        label,
+        .dataTables_info,
+        .dataTables_paginate,
+        .paging_simple_numbers {
             display: none;
         }
     }
@@ -20,14 +25,10 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-0" style="display:flex; flex-direction:right;">
                 <h1 class="m-0">Daftar Peserta</h1>
-                <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
+                <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-3" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
                 <a href="/pesertamagang/new" class="btn btn-primary mb-2">Tambah</a>
-                <?php echo form_open('pesertamagang/search') ?>
-                <input type="text" name="keyword" class="form-control mr-2" placeholder="Search">
-                <button type="submit" class="btn btn-success ml-6" style="display:none;">Cari</button>
-                <?php echo form_close() ?>
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>
@@ -41,7 +42,8 @@
                     <!-- Default box -->
                     <div class="card card-primary card-outline">
                         <div class="card-body table-responsive">
-                            <table id="tabel-bidang" class="table table-bordered table-striped">
+
+                            <table id="tabel" class="table table-bordered table-striped js-basic-example dataTable">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -95,12 +97,12 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 
 <script>
     $(document).ready(function() {
-        $('#tabel-bidang').DataTable({});
+        $('#tabel').DataTable();
     });
 </script>

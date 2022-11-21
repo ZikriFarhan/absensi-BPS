@@ -11,7 +11,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="<?= base_url() ?>/template/adminlte/img/2042_crop.png" class="img-circle elevation-2" alt="User Image">
+        <img src="<?= base_url() ?>/template/adminlte/img/blue_user.png" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
         <a href="#" class="d-block"><?= session()->get('username') ?></a>
@@ -77,7 +77,13 @@
             <i class="far fa fa-history nav-icon"></i>
             <p>Histori Absensi</p>
           </a>
-        </li>
+          <!-- </li>
+                <li class="nav-item">
+          <a href="<?php echo base_url('pesertamagang/dataTable') ?>" class="nav-link">
+            <i class="far fa fa-history nav-icon"></i>
+            <p>Data Table</p>
+          </a>
+        </li> -->
         <li class="nav-item"><b>
             <a href="<?php echo base_url('logout') ?>" class="nav-link text-danger">
               <i class="nav-icon fas fa-sign-out-alt"></i>

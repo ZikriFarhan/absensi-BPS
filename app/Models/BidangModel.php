@@ -32,4 +32,13 @@ class BidangModel extends Model
             return false;
         }
     }
+
+    function getKeyword($keyword)
+    {
+        $builder = $this->table('bidang');
+        $builder->select('*');
+        $builder->Like('nama_bidang', $keyword);
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
 }

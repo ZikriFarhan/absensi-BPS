@@ -29,11 +29,13 @@ class Kartuabsen extends BaseController
         $input = $this->request->getPost();
         if ($input != null) {
             $data = $this->pesertaMagang->find($input['id_peserta']);
+            $title = 'ambil qr';
+
             $writer = new PngWriter();
             $qrCode = QrCode::create($data['nim']);
             $result = $writer->write($qrCode, null, null);
             $dataUri = $result->getDataUri();
-            echo view('kartuabsen/wrapper', ['data' => $data, 'uri' => $dataUri]);
+            echo view('kartuabsen/wrapper', ['data' => $data, 'uri' => $dataUri, 'title' => $title]);
         } else {
             return redirect()->to('/kartuabsen')->with('error', 'Data tidak ditemukan');
         }
