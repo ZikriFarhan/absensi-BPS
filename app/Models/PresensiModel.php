@@ -77,4 +77,21 @@ class PresensiModel extends Model
         $query = $builder->get()->getRowArray();
         return $query;
     }
+
+    function getKeyword($keyword)
+    {
+        $builder = $this->table('presensi');
+        $builder->select('presensi.*, kehadiran.nama_kehadiran, status.nama_status, pesertamagang.nama');
+        $builder->join('kehadiran', 'kehadiran.id = presensi.id_kehadiran', 'inner');
+        $builder->join('status', 'status.id = presensi.id_status', 'inner');
+        $builder->join('pesertamagang', 'pesertamagang.nim = presensi.nim', 'inner');
+        $builder->like('nama', $keyword);
+        $builder->orLike('tanggal', $keyword);
+        $builder->orLike('jam_masuk', $keyword);
+        $builder->orLike('jam_keluar', $keyword);
+        $builder->orLike('keterangan', $keyword);
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+
 }

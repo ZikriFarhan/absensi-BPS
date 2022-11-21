@@ -21,7 +21,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-8">
                     <div class="alert alert-primary">
                         <i class="icon fas fa-user"></i> Selamat Datang
                         <strong><?= session()->get('username') ?></strong>, Anda login sebagai <strong><?= session()->get('role') ?></strong>
@@ -29,8 +29,8 @@
                 </div>
             </div>
             <div class="row">
+                <?php if (session()->get('role') == 'admin') {?>
                 <div class="col-lg-4 col-6">
-
                     <div class="small-box bg-info">
                         <div class="inner">
                             <?php
@@ -48,7 +48,6 @@
                         <a href="../pesertamagang" class="small-box-footer">Lihat <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-
                 <div class="col-lg-4 col-6">
 
                     <div class="small-box bg-success">
@@ -68,19 +67,24 @@
                         <a href="../bidang" class="small-box-footer">Lihat <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
+                <?php } ?>
 
+                <?php if (session()->get('role') == 'user') {?>
                 <div class="col-lg-4 col-6">
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>Customer</h3>
-                            <h6>Data User</h6>
+
+                    <div class="small-box bg-success">
+                        <div class="inner mb-3">
+                            <h4>Histori Absensi</h4>
+                            <h6>Peserta</h6>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-search"></i>
                         </div>
-                        <a href="nasabah" class="small-box-footer">Lihat <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="../presensi" class="small-box-footer">Cek disini <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
+                <?php } ?>
+
 
             </div>
 

@@ -1,50 +1,116 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+<style>
+    @media print{
+      @page {
+        margin-top:30px;
+      }
+      .btn,
+      .last,
+      footer,
+      a#debug-icon-link,
+      label,
+      .dataTables_info,
+      .dataTables_paginate,
+      .paging_simple_numbers
+      {
+      display: none;
+      }
+    }
+</style>
+
 <div class="container-fluid">
+<!-- Content Wrapper. Contains page content -->
 
-    <a href="/bidang/new" class="btn btn-primary">Tambah</a>
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <h1 class="m-0">Data Bidang</h1>
+                <div class="ml-auto">
+                    <!-- tombol tambah data -->
+                    <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
+                    <a class="btn btn-primary float-right" id="btnTambah" href="<?php echo base_url("bidang/new") ?>"role="button">
+                        <i class="fas fa-plus"></i> Tambah
+                    </a>
+                </div><!-- /.col -->
+            </div><!-- /.col -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
 
-    <table id="tabel-peserta" border="1">
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                    <!-- Default box -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-body table-responsive">
+                            <table id="tabel-bidang" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Bidang</th>
+                                        <th class="last">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <?php
+                                        $no=1;
+                                        foreach($data as $row) : ?>
 
-        <h1> <?php $title ?> </h1>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Bidang</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
+                                        <tr>
+                                            <td><?php echo $no++ ?></td>
+                                            <td><?= $row['nama_bidang']; ?></td>
+                                            <td class="last">
+                                                <a href="/bidang/show/<?= $row['id']; ?>" class="btn btn-primary mr-1 ml-1">Detail</a>
+                                                <a href="/bidang/edit/<?= $row['id']; ?>" class="btn btn-warning mr-1 ml-1">Edit</a>
+                                                <form action="/bidang/delete/<?= $row['id']; ?>" method="post" class="d-inline">
+                                                    <?= csrf_field(); ?>
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button type="submit" class="btn btn-danger mr-1 ml-1" onclick="return confirm('Apakah anda yakin? Seluruh data Absensi atas nama ini akan terhapus');">Delete</button>
+                                                </form>
+                                            </td>
+            
+                                        </tr>
 
-        <tbody>
-            <?php $i = 1; ?>
-            <?php foreach ($data as $row) : ?>
-                <tr>
-                    <td><?= $i++; ?></td>
-                    <td><?= $row['nama_bidang']; ?>
-                    <a href="/bidang/show/<?= $row['id']; ?>" class="btn btn-primary">Detail</a>
-                        <a href="/bidang/edit/<?= $row['id']; ?>" class="btn btn-warning">Edit</a>
-                        <form action="/bidang/delete/<?= $row['id']; ?>" method="post" class="d-inline">
-                            <?= csrf_field(); ?>
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin?');">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-        </h1>
-    </table>
+                                        <?php endforeach; ?> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                </div>
+            
+                <div class="row">
+
+                </div>
+            <?php
+            
+            ?>
+
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 </div>
+<!-- /.content-wrapper -->
+    
 
-<?php
+<!-- <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Ini Home Page</h1>
+          </div>
+    </div> -->
+<!-- </div> -->
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 
-echo view('/layout_admin/head.php');
-echo view('/layout_admin/navbar.php');
-echo view('/layout_admin/sidebar_left.php');
-echo view('bidang/data_bidang.php');
-echo view('/layout_admin/footer.php');
-// echo view('layout/sidebar_right.php');
-// echo view('layout/example.php');
-?>
-
+<script>
+    $(document).ready(function () {
+    $('#tabel-bidang').DataTable();
+});
+</script>

@@ -16,10 +16,13 @@ class Bidang extends BaseController
 
     public function index()
     {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
         $data = [
             'title' => 'Data Bidang',
             'data' => $this->bidangModel->findAll(),
-            'isi' => 'bidang/data_bidang'
+            'isi' => 'bidang/index'
         ];
 
         echo view('layout_admin/v_wrapper', $data);
