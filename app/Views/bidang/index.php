@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     @media print {
         @page {
@@ -22,13 +23,21 @@
     <!-- Content Wrapper. Contains page content -->
     <?php if (session()->getFlashData('error')) { ?>
         <script>
-            alert('<?= session()->getFlashData('error') ?>')
+            Swal.fire({
+                icon: 'error',
+                title: '<?= session()->getFlashData('error') ?>',
+                showConfirmButton: true,
+            })
         </script>
     <?php } ?>
 
     <?php if (session()->getFlashData('success')) { ?>
         <script>
-            alert('<?= session()->getFlashData('success') ?>')
+            Swal.fire({
+                icon: 'success',
+                title: '<?= session()->getFlashData('success') ?>',
+                showConfirmButton: true,
+            })
         </script>
     <?php } ?>
 
