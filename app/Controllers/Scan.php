@@ -7,13 +7,11 @@ use App\Models\ScanModel;
 
 class Scan extends BaseController
 {
-
     public function __construct()
     {
         $this->scanModel = new ScanModel();
         helper('form');
     }
-
 
     public function index()
     {

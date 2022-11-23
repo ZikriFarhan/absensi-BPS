@@ -77,7 +77,6 @@ class Presensi extends BaseController
             'jam_keluar' => '00:00:00',
             'keterangan' => $this->request->getPost('keterangan'),
         ];
-
         if ($data['id_kehadiran'] == 1) {
             $data['id_status'] = 1;
             $data['jam_masuk'] = $this->request->getPost('jam_masuk');
@@ -85,22 +84,18 @@ class Presensi extends BaseController
             $data['id_status'] = 3;
             $data['jam_masuk'] = '00:00:00';
         }
-
         $validate = $this->presensiModel->insert($data);
-
         if ($validate) {
             $data = [
                 'status' => 200,
                 'message' => 'Data berhasil ditambahkan'
             ];
-
             return redirect()->to('/presensi')->with('success', $data['message']);
         } else {
             $data = [
                 'status' => 500,
                 'message' => $this->presensiModel->errors()
             ];
-
             return redirect()->to('/presensi/new')->withInput()->with('error', $data['message']);
         }
     }
@@ -141,7 +136,6 @@ class Presensi extends BaseController
             'tanggal' => $this->request->getPost('tanggal'),
             'keterangan' => $this->request->getPost('keterangan'),
         ];
-
         if ($data['id_kehadiran'] == 1) {
             $data['id_status'] = $this->request->getPost('id_status');
             $data['jam_masuk'] = $this->request->getPost('jam_masuk');
@@ -151,22 +145,18 @@ class Presensi extends BaseController
             $data['jam_masuk'] = '00:00:00';
             $data['jam_keluar'] = '00:00:00';
         }
-
         $validate = $this->presensiModel->update($id, $data);
-
         if ($validate) {
             $data = [
                 'status' => 200,
                 'message' => 'Data berhasil diubah'
             ];
-
             return redirect()->to('/presensi')->with('success', $data['message']);
         } else {
             $data = [
                 'status' => 500,
                 'message' => $this->presensiModel->errors()
             ];
-
             return redirect()->to('/presensi/edit/' . $id)->withInput()->with('error', $data['message']);
         }
     }

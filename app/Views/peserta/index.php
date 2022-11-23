@@ -1,20 +1,20 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 <style>
-    @media print{
-      @page {
-        margin-top:30px;
-      }
-      .btn,
-      .last,
-      footer,
-      a#debug-icon-link,
-      label,
-      .dataTables_info,
-      .dataTables_paginate,
-      .paging_simple_numbers
-      {
-      display: none;
-      }
+    @media print {
+        @page {
+            margin-top: 30px;
+        }
+
+        .btn,
+        .last,
+        footer,
+        a#debug-icon-link,
+        label,
+        .dataTables_info,
+        .dataTables_paginate,
+        .paging_simple_numbers {
+            display: none;
+        }
     }
 </style>
 <!--  -->
@@ -27,8 +27,8 @@
         <div class="container-fluid">
             <div class="row mb-0" style="display:flex; flex-direction:right;">
                 <h1 class="m-0">Daftar Peserta</h1>
-                    <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-3" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
-                    <a href="/pesertamagang/new" class="btn btn-primary mb-2">Tambah</a>
+                <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-3" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
+                <a href="/pesertamagang/new" class="btn btn-primary mb-2">Tambah</a>
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>
@@ -42,7 +42,7 @@
                     <!-- Default box -->
                     <div class="card card-primary card-outline">
                         <div class="card-body table-responsive">
-                                
+
                             <table id="tabel" class="table table-bordered table-striped js-basic-example dataTable">
                                 <thead>
                                     <tr>
@@ -102,7 +102,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 
 <script>
-    $(document).ready(function () {
-    $('#tabel').DataTable();
-});
+    $(document).ready(function() {
+        $('#tabel').DataTable();
+    });
 </script>

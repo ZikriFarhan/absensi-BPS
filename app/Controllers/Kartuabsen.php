@@ -17,28 +17,25 @@ class Kartuabsen extends BaseController
 
     public function index()
     {
-         $data = [
+        $data = [
             'title' => 'Ambil QR',
             'isi'   => 'kartuabsen/index'
         ];
-        echo view('layout_admin/v_wrapper',$data);
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     public function genKartu()
     {
         $input = $this->request->getPost();
-        // dd($input);
         if ($input != null) {
             $data = $this->pesertaMagang->find($input['id_peserta']);
             $title = 'ambil qr';
 
             $writer = new PngWriter();
-
             $qrCode = QrCode::create($data['nim']);
-
             $result = $writer->write($qrCode, null, null);
             $dataUri = $result->getDataUri();
-            echo view('kartuabsen/wrapper', ['data' => $data, 'uri' => $dataUri, 'title' => $title ]);
+            echo view('kartuabsen/wrapper', ['data' => $data, 'uri' => $dataUri, 'title' => $title]);
         } else {
             return redirect()->to('/kartuabsen')->with('error', 'Data tidak ditemukan');
         }

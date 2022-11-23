@@ -5,10 +5,11 @@
     "homepage": "https://codeigniter.com",
     "license": "MIT",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^7.4.0 || ^8.0.0",
         "codeigniter4/framework": "^4.0",
         "endroid/qr-code": "^4.6",
-        "codeigniter4/shield": "dev-develop"
+        "codeigniter4/shield": "dev-develop",
+        "ext-gd": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -29,7 +30,10 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "post-install-cmd": [
+            "chmod -R 777 public/"
+        ]
     },
     "support": {
         "forum": "http://forum.codeigniter.com/",

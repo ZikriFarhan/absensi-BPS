@@ -67,9 +67,7 @@ class Kehadiran extends BaseController
         $data = [
             'nama_kehadiran' => $this->request->getPost('nama_kehadiran')
         ];
-
         $validate = $this->kehadiranModel->insert($data);
-
         if ($validate) {
             $data = [
                 'status' => 200,
@@ -114,9 +112,7 @@ class Kehadiran extends BaseController
         $data = [
             'nama_kehadiran' => $this->request->getPost('nama_kehadiran')
         ];
-
         $validate = $this->kehadiranModel->update($id, $data);
-
         if ($validate) {
             $data = [
                 'status' => 200,
