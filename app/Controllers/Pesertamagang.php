@@ -44,7 +44,7 @@ class Pesertamagang extends BaseController
                 'title' => 'Data Peserta Magang',
                 'message' => 'Data tidak ditemukan'
             ];
-            echo view('errors/html/error_404', $data);
+            return redirect()->to('/pesertamagang')->with('error', 'Data tidak ditemukan');
         }
     }
 
@@ -85,7 +85,7 @@ class Pesertamagang extends BaseController
                 'status' => 500,
                 'message' => $this->magangModel->errors()
             ];
-            return redirect()->to('/pesertamagang/new')->with('error', $data['message']);
+            return redirect()->to('/pesertamagang/new')->withInput()->with('error', $data['message']);
         }
     }
 
@@ -97,7 +97,7 @@ class Pesertamagang extends BaseController
         if ($this->magangModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Peserta',
-                'peserta' => $this->magangModel->find($id),
+                'peserta' => $this->magangModel->getID($id),
                 'univ' => $this->universitasModel->findAll(),
                 'bidang' => $this->bidangModel->findAll(),
                 'isi' => 'peserta/edit'
@@ -109,7 +109,7 @@ class Pesertamagang extends BaseController
                 'title' => 'Data Peserta Magang',
                 'message' => 'Data tidak ditemukan'
             ];
-            echo view('errors/html/error_404', $data);
+            return redirect()->to('/pesertamagang')->with('error', $data['message']);
         }
     }
 
@@ -119,6 +119,7 @@ class Pesertamagang extends BaseController
             return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
         }
         $data = [
+            'id' => $id,
             'id_bidang' => $this->request->getPost('id_bidang'),
             'id_universitas' => $this->request->getPost('id_universitas'),
             'nama' => $this->request->getPost('nama'),
