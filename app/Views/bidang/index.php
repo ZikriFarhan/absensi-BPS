@@ -86,9 +86,7 @@
                                                 <a href="/bidang/show/<?= $row['id']; ?>" class="btn btn-primary mr-1 ml-1">Detail</a>
                                                 <a href="/bidang/edit/<?= $row['id']; ?>" class="btn btn-warning mr-1 ml-1">Edit</a>
                                                 <form action="/bidang/delete/<?= $row['id']; ?>" method="post" class="d-inline">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="btn btn-danger mr-1 ml-1" onclick="return confirm('Apakah anda yakin?');">Delete</button>
+                                                    <button type="submit" class="btn btn-danger mr-1 ml-1 delete">Delete</button>
                                                 </form>
                                             </td>
 
@@ -132,5 +130,24 @@
 <script>
     $(document).ready(function() {
         $('#tabel-bidang').DataTable();
+    });
+</script>
+
+<script>
+    $('.delete').on('click', function(e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus data!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
     });
 </script>

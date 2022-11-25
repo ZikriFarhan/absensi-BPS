@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
     @media print {
         @page {
@@ -21,6 +23,25 @@
 <div class="container-fluid">
 
     <!-- Content Wrapper. Contains page content -->
+    <?php if (session()->getFlashdata('error')) { ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '<?= session()->getFlashdata('error'); ?>',
+                showConfirmButton: true,
+            })
+        </script>
+    <?php } ?>
+
+    <?php if (session()->getFlashdata('success')) { ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '<?= session()->getFlashdata('success'); ?>',
+                showConfirmButton: true,
+            })
+        </script>
+    <?php } ?>
 
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -67,9 +88,7 @@
                                                 <a href="/pesertamagang/show/<?= $row['id']; ?>" class="btn btn-primary mr-1 ml-1">Detail</a>
                                                 <a href="/pesertamagang/edit/<?= $row['id']; ?>" class="btn btn-warning mr-1 ml-1">Edit</a>
                                                 <form action="/pesertamagang/delete/<?= $row['id']; ?>" method="post" class="d-inline">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="btn btn-danger mr-1 ml-1" onclick="return confirm('Apakah anda yakin? Seluruh data Absensi atas nama ini akan terhapus');">Delete</button>
+                                                    <button type="submit" class="btn btn-danger mr-1 ml-1 delete" id="delete_button">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -105,4 +124,24 @@
     $(document).ready(function() {
         $('#tabel').DataTable();
     });
+</script>
+
+<script>
+    $('.delete').on('click', function(e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Seluruh data Absensi atas nama ini akan terhapus!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    })
 </script>
