@@ -109,7 +109,6 @@ class Presensi extends BaseController
             $data = [
                 'title' => 'Form Edit Presensi',
                 'data' => $this->presensiModel->getID($id),
-                'peserta' => $this->pesertaModel->findAll(),
                 'status' => $this->statusModel->findAll(),
                 'kehadiran' => $this->kehadiranModel->findAll(),
                 'isi' => 'presensi/edit'
