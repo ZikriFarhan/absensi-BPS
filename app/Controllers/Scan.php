@@ -45,9 +45,11 @@ class Scan extends BaseController
                     ];
                     $this->scanModel->absen_pulang($input_nim, $data);
                     session()->setFlashdata('pesan', 'Absen Pulang Berhasil');
+                    session()->setFlashdata('success', 'Absen Pulang Berhasil');
                     return redirect()->to(base_url('scan'));
                 } else {
                     session()->setFlashdata('pesan', 'Anda Sudah Absen Pulang');
+                    session()->setFlashdata('success', 'Anda sudah Absen Pulang');
                     return redirect()->to(base_url('scan'));
                 }
             } else {
@@ -60,10 +62,12 @@ class Scan extends BaseController
                 ];
                 $this->scanModel->absen_masuk($data);
                 session()->setFlashdata('pesan', 'Absen Masuk Berhasil');
+                session()->setFlashdata('success', 'Absen Masuk Berhasil');
                 return redirect()->to(base_url('scan'));
             }
         } else {
             session()->setFlashdata('pesan', 'NIM Tidak Terdaftar');
+            session()->setFlashdata('error', 'NIM Tidak Terdaftar');
             return redirect()->to(base_url('scan'));
         }
     }

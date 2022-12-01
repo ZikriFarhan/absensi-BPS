@@ -1,11 +1,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<?php if (session()->getFlashData('pesan')) { ?>
+<?php if (session()->getFlashData('error')) { ?>
     <script>
-        alert('<?= session()->getFlashData('pesan') ?>')
+        Swal.fire({
+            icon: 'error',
+            title: '<?= session()->getFlashData('error') ?>',
+            showConfirmButton: true,
+        })
     </script>
 <?php } ?>
+<?php if (session()->getFlashData('success')) { ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '<?= session()->getFlashData('success') ?>',
+            showConfirmButton: true,
+        })
+    </script>
+<?php }  ?>
 
 <div class="content">
     <div class="container-fluid">
