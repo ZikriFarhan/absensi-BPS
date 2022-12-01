@@ -140,6 +140,7 @@ class Bidang extends BaseController
         }
         if ($this->bidangModel->id_exists($id)) {
             try {
+                session()->setFlashdata('konfirmasi', 'Anda yakin menghapus bidang ini?');
                 $delete = $this->bidangModel->delete($id);
                 if ($delete) {
                     $data = [
