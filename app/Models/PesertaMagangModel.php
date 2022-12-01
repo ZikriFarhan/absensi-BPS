@@ -17,8 +17,8 @@ class PesertaMagangModel extends Model
     protected $validationRules      = [
         'id_bidang'     => 'required|numeric',
         'id_universitas' => 'required|numeric',
-        'nama'          => 'required',
-        'nim'           => 'required',
+        'nama'          => 'required', 
+        'nim'           => 'required|numeric|is_unique[pesertamagang.nim,id,{id}]',  
     ];
     protected $validationMessages   = [
         'id_bidang'     => [
@@ -31,9 +31,12 @@ class PesertaMagangModel extends Model
         ],
         'nama'          => [
             'required' => 'Nama harus diisi',
+            'is_unique' => 'Nama sudah terdaftar'
         ],
         'nim'           => [
-            'required' => 'NIM harus diisi'
+            'required' => 'NIM harus diisi',
+            'numeric' => 'NIM harus angka',
+            'is_unique' => 'NIM sudah terdaftar'
         ],
     ];
 
