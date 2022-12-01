@@ -7,11 +7,11 @@
                 <div class='box-header with-border'>
                     <h3 class='box-title'>Tambah Peserta</h3>
                 </div>
-    <?php if (session()->getFlashdata('validation')) {
+    <?php if (session()->getFlashdata('error')) {
     ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach (session()->getFlashdata('validation') as $error) : ?>
+                <?php foreach (session()->getFlashdata('error') as $error) : ?>
                     <li><?= $error ?></li>
                 <?php endforeach; ?>
             </ul>
