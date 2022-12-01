@@ -119,6 +119,7 @@ class Pesertamagang extends BaseController
             return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
         }
         $data = [
+            'id' => $id,
             'id_bidang' => $this->request->getPost('id_bidang'),
             'id_universitas' => $this->request->getPost('id_universitas'),
             'nama' => $this->request->getPost('nama'),
