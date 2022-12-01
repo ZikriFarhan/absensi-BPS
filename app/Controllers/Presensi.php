@@ -7,6 +7,8 @@ use App\Models\PresensiModel;
 use App\Models\PesertaMagangModel;
 use App\Models\StatusModel;
 use App\Models\KehadiranModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Presensi extends BaseController
 {
@@ -161,20 +163,31 @@ class Presensi extends BaseController
         }
     }
 
-
-
     public function delete($id)
     {
         if (!auth()->user()->inGroup('admin')) {
             return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
         }
         if ($this->presensiModel->id_exists($id)) {
-            $this->presensiModel->delete($id);
-            $data = [
-                'status' => 200,
-                'message' => 'Data berhasil dihapus'
-            ];
-            return redirect()->to('/presensi')->with('succes', $data['message']);
+            try {
+                session()->setFlashdata('konfirmasi', 'Anda yakin menghapus bidang ini?');
+                $delete = $this->presensiModel->delete($id);
+                if ($delete) {
+                    $data = [
+                        'status' => 200,
+                        'message' => 'Data berhasil dihapus'
+                    ];
+                    return redirect()->to('/presensi')->with('success', $data['message']);
+                } else {
+                    throw new \Exception();
+                }
+            } catch (\Exception $e) {
+                $data = [
+                    'status' => 500,
+                    'message' => 'Data tidak dapat dihapus karena sedang digunakan'
+                ];
+                return redirect()->to('/presensi')->with('error', $data['message']);
+            }
         } else {
             $data = [
                 'status' => 404,
@@ -182,5 +195,54 @@ class Presensi extends BaseController
             ];
             echo view('errors/html/error_404', $data);
         }
+    }
+
+    public function export_excel()
+    {
+    $data = $this->presensiModel->getAll();
+
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    // tulis header/nama kolom 
+    $sheet->getStyle('A1')->getFont()->setBold(true);
+
+    $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A1', "Rekap Absensi PKL")
+                ->mergeCells('A1:D1')
+                ->setCellValue('A3', "No")
+                ->setCellValue('B3', "Nama")
+                ->setCellValue('C3', "Tanggal")
+                ->setCellValue('D3', "Jam Masuk")
+                ->setCellValue('E3', "Jam Keluar")
+                ->setCellValue('F3', "Kehadiran")
+                ->setCellValue('G3', "Keterangan")
+                ->setCellValue('H3', "Status");
+    
+    $column = 4;
+    // tulis data mobil ke cell
+    $i = 1;
+    foreach($data as $data) {
+        $spreadsheet->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $column, $i++)
+                    ->setCellValue('B' . $column, $data['nama'])
+                    ->setCellValue('C' . $column, $data['tanggal'])
+                    ->setCellValue('D' . $column, $data['jam_masuk'])
+                    ->setCellValue('E' . $column, $data['jam_keluar'])
+                    ->setCellValue('F' . $column, $data['nama_kehadiran'])
+                    ->setCellValue('G' . $column, $data['keterangan'])
+                    ->setCellValue('H' . $column, $data['nama_status']);
+
+        $column++;
+    }
+    // tulis dalam format .xlsx
+    $writer = new Xlsx($spreadsheet);
+    $fileName = 'Rekap PKL BPS Jateng';
+
+    // Redirect hasil generate xlsx ke web client
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename='.$fileName.'.xlsx');
+    header('Cache-Control: max-age=0');
+
+    $writer->save('php://output');
     }
 }
