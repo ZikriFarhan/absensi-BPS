@@ -1,3 +1,11 @@
+<style>
+
+    .bootstrap-select>.dropdown-toggle{
+        background-color:white;
+        border-color:#ced4da;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="content-header">
         <div class="container-fluid">
@@ -32,7 +40,7 @@
 
                 <div class="form-group">
                     <label for="id_universitas">Universitas</label>
-                    <select class="form-control" id="id_universitas" name="id_universitas">
+                    <select class="form-control selectpicker" id="id_universitas" name="id_universitas">
                         <option placeholder="" value="<?= $peserta['id_universitas'] ?>">Pilih Universitas</option>
                         <?php foreach ($univ as $row) : ?>
                             <option value="<?= $row['id']; ?>"><?= $row['nama_universitas']; ?></option>
@@ -42,7 +50,7 @@
 
                 <div class="form-group">
                     <label for="id_bidang">Bidang</label>
-                    <select class="form-control" id="id_bidang" name="id_bidang">
+                    <select class="form-control selectpicker" id="id_bidang" name="id_bidang">
                         <option placeholder="" value="<?= $peserta['id_bidang'] ?>">Pilih Bidang</option>
                         <?php foreach ($bidang as $row) : ?>
                             <option value="<?= $row['id']; ?>"><?= $row['nama_bidang']; ?></option>
@@ -55,3 +63,5 @@
         </div>
     </div>
 </div>
+
+

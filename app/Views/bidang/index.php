@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     @media print {
         @page {
@@ -22,13 +23,21 @@
     <!-- Content Wrapper. Contains page content -->
     <?php if (session()->getFlashData('error')) { ?>
         <script>
-            alert('<?= session()->getFlashData('error') ?>')
+            Swal.fire({
+                icon: 'error',
+                title: '<?= session()->getFlashData('error') ?>',
+                showConfirmButton: true,
+            })
         </script>
     <?php } ?>
 
     <?php if (session()->getFlashData('success')) { ?>
         <script>
-            alert('<?= session()->getFlashData('success') ?>')
+            Swal.fire({
+                icon: 'success',
+                title: '<?= session()->getFlashData('success') ?>',
+                showConfirmButton: true,
+            })
         </script>
     <?php } ?>
 
@@ -77,9 +86,7 @@
                                                 <a href="/bidang/show/<?= $row['id']; ?>" class="btn btn-primary mr-1 ml-1">Detail</a>
                                                 <a href="/bidang/edit/<?= $row['id']; ?>" class="btn btn-warning mr-1 ml-1">Edit</a>
                                                 <form action="/bidang/delete/<?= $row['id']; ?>" method="post" class="d-inline">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="btn btn-danger mr-1 ml-1" onclick="return confirm('Apakah anda yakin?');">Delete</button>
+                                                    <button type="submit" class="btn btn-danger mr-1 ml-1 delete">Delete</button>
                                                 </form>
                                             </td>
 
@@ -123,5 +130,25 @@
 <script>
     $(document).ready(function() {
         $('#tabel-bidang').DataTable();
+    });
+</script>
+
+<script>
+    $('.delete').on('click', function(e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus data!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
     });
 </script>
