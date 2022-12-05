@@ -18,9 +18,10 @@ class Universitas extends BaseController
     {
         $data = [
             'title' => 'Data Universitas',
-            'universitas' => $this->univModel->findAll()
+            'universitas' => $this->univModel->findAll(),
+            'isi' => 'universitas/index'
         ];
-        echo view('universitas/index', $data);
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     public function show($id)
@@ -28,9 +29,10 @@ class Universitas extends BaseController
         if ($this->univModel->id_exists($id)) {
             $data = [
                 'title' => 'Data Universitas',
-                'data' => $this->univModel->find($id)
+                'data' => $this->univModel->find($id),
+                'isi' => 'universitas/show'
             ];
-            echo view('universitas/show', $data);
+            echo view('layout_admin/v_wrapper', $data);
         } else {
             $data = [
                 'status' => 404,
@@ -47,9 +49,10 @@ class Universitas extends BaseController
             return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
         }
         $data = [
-            'title' => 'Form Tambah Universitas'
+            'title' => 'Form Tambah Universitas',
+            'isi' => 'universitas/new'
         ];
-        echo view('universitas/new', $data);
+        echo view('layout_admin/v_wrapper', $data);
     }
 
     public function create()
@@ -86,9 +89,10 @@ class Universitas extends BaseController
         if ($this->univModel->id_exists($id)) {
             $data = [
                 'title' => 'Form Edit Universitas',
-                'data' => $this->univModel->find($id)
+                'data' => $this->univModel->find($id),
+                'isi' => 'universitas/edit'
             ];
-            echo view('universitas/edit', $data);
+            echo view('layout_admin/v_wrapper', $data);
         } else {
             $data = [
                 'status' => 404,

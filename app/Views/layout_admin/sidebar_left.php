@@ -52,6 +52,12 @@
                   <p>Daftar Bidang</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url('universitas') ?>" class="nav-link ">
+                  <i class="fas fa-building nav-icon"></i>
+                  <p>Daftar Universitas</p>
+                </a>
+              </li>
             </ul>
           </li>
         <?php endif ?>
