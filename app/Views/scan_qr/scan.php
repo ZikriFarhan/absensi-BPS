@@ -10,12 +10,15 @@
             showConfirmButton: true,
         })
     </script>
-<?php } ?>
+
+<?php }  ?>
+
 <?php if (session()->getFlashData('success')) { ?>
     <script>
         Swal.fire({
             icon: 'success',
             title: '<?= session()->getFlashData('success') ?>',
+            timer: '3000',
             showConfirmButton: true,
         })
     </script>

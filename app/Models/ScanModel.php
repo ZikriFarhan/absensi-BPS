@@ -39,8 +39,7 @@ class ScanModel extends Model
 
     public function absen_pulang($nim, $data)
     {
-        $tgl = date('Y-m-d');
-        $query = $this->db->table('presensi')->update($data, array('nim' => $nim, 'tanggal' => $tgl));
+        $query = $this->db->table('presensi')->update($data, array('nim' => $nim));
         return $query;
     }
 }

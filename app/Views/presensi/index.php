@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     @media print {
         @page {
@@ -40,6 +41,25 @@
 
 <div class="container-fluid">
     <!-- Content Wrapper. Contains page content -->
+    <?php if (session()->getFlashdata('error')) { ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '<?= session()->getFlashdata('error'); ?>',
+                showConfirmButton: true,
+            })
+        </script>
+    <?php } ?>
+
+    <?php if (session()->getFlashdata('success')) { ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '<?= session()->getFlashdata('success'); ?>',
+                showConfirmButton: true,
+            })
+        </script>
+    <?php } ?>
 
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -52,6 +72,7 @@
                 </form>
                 <?php if (session('role') === 'admin') : ?>
                     <a href="/presensi/new" class="btn btn-primary mb-2">Tambah</a>
+                    <a href="/presensi/rekappresensi_harian" class="btn btn-success mb-2 ml-2">Rekap Presensi Harian</a>
                 <?php endif ?>
 
             </div><!-- /.col -->
@@ -98,9 +119,7 @@
                                                 <?php if (session('role') === 'admin') : ?>
                                                     <a href="/presensi/edit/<?= $row['id']; ?>" class="btn btn-warning mr-1 ml-1">Edit</a>
                                                     <form action="/presensi/delete/<?= $row['id']; ?>" method="post" class="d-inline">
-                                                        <?= csrf_field(); ?>
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <button type="submit" class="btn btn-danger mr-1 ml-1" onclick="return confirm('Apakah anda yakin?');">Delete</button>
+                                                        <button type="submit" class="btn btn-danger mr-1 ml-1 delete" id="delete_button">Delete</button>
                                                     </form>
                                                 <?php endif ?>
                                             </td>
@@ -139,9 +158,21 @@
     });
 </script>
 
-
 <script>
-    $(document).ready(function() {
-        $('#tabel-bidang').DataTable({});
-    });
+    $('.delete').on('click', function(e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus data!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    })
 </script>
