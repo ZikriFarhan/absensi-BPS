@@ -1,11 +1,10 @@
 <style>
-
     .form-group {}
-    .bootstrap-select>.dropdown-toggle{
-    background-color:white;
-    border-color:#ced4da;
-    }
 
+    .bootstrap-select>.dropdown-toggle {
+        background-color: white;
+        border-color: #ced4da;
+    }
 </style>
 
 
@@ -33,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="nim">Nama</label>
-                    <select class="form-control" id="nim" name="nim" disabled>
+                    <select class="form-control selectpicker" data-live-search="true" id="nim" name="nim" disabled>
                         <option value="<?= $data['nim'] ?>"><?= $data['nama'] ?></option>
                         <input type="hidden" name="nim" value="<?= $data['nim'] ?>">
                     </select>

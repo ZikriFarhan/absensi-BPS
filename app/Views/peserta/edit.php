@@ -1,8 +1,7 @@
 <style>
-
-    .bootstrap-select>.dropdown-toggle{
-        background-color:white;
-        border-color:#ced4da;
+    .bootstrap-select>.dropdown-toggle {
+        background-color: white;
+        border-color: #ced4da;
     }
 </style>
 
@@ -41,8 +40,7 @@
                 <div class="form-group">
                     <label for="id_universitas">Universitas</label>
 
-                    <select class="form-control" id="id_universitas" name="id_universitas" title="Pilih Universitas">
-                        <option placeholder="" value="<?= $peserta['id_universitas'] ?>">Pilih Universitas</option>
+                    <select class="form-control selectpicker" data-live-search="true" id="id_universitas" name="id_universitas">
                         <?php foreach ($univ as $row) : ?>
                             <option value="<?= $row['id']; ?>" <?= ($peserta['id_universitas'] == $row['id']) ? "selected" : ""; ?>><?= $row['nama_universitas']; ?></option>
                         <?php endforeach; ?>
@@ -78,4 +76,3 @@
         });
     });
 </script>
-
