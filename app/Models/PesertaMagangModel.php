@@ -31,6 +31,7 @@ class PesertaMagangModel extends Model
         ],
         'nama'          => [
             'required' => 'Nama harus diisi',
+            'is_unique' => 'Nama sudah terdaftar'
         ],
         'nim'           => [
             'required' => 'NIM harus diisi',

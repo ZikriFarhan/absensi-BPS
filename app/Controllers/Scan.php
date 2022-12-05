@@ -67,6 +67,7 @@ class Scan extends BaseController
                     }
                     break;
                 case $jam_absen['jam_pulang']:
+
                     if ($cek_kehadiran == true && $cek_kehadiran->id_status == 1) {
                         if ($cek_kehadiran->jam_keluar == '00:00:00') {
                             $data = [
@@ -136,6 +137,5 @@ class Scan extends BaseController
             }
         } else {
             $this->log_to_console('Belum Waktu Tutup Presensi');
-        }
     }
 }

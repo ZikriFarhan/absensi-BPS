@@ -37,6 +37,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- JQuery DataTable Css -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" >
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" >
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
 
 

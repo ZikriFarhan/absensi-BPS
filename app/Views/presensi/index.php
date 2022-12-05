@@ -18,6 +18,26 @@
         }
     }
 </style>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<?php if (session()->getFlashData('error')) { ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '<?= session()->getFlashData('error') ?>',
+            showConfirmButton: true,
+        })
+    </script>
+<?php } ?>
+<?php if (session()->getFlashData('success')) { ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '<?= session()->getFlashData('success') ?>',
+            showConfirmButton: true,
+        })
+    </script>
+<?php }  ?>
 
 <div class="container-fluid">
     <!-- Content Wrapper. Contains page content -->
@@ -47,10 +67,14 @@
             <div class="row mb-0" style="display:flex; flex-direction:right;">
                 <h1 class="m-0">Histori Absensi</h1>
                 <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
+                <form action="<?= base_url('presensi/export_excel') ?>" method="POST" >
+                    <button class="btn btn-success ml-1 mr-1" type="submit">excel <i class="far fa-file-excel"></i></button>
+                </form>
                 <?php if (session('role') === 'admin') : ?>
                     <a href="/presensi/new" class="btn btn-primary mb-2">Tambah</a>
                     <a href="/presensi/rekappresensi_harian" class="btn btn-success mb-2 ml-2">Rekap Presensi Harian</a>
                 <?php endif ?>
+
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->
     </div>
