@@ -35,40 +35,54 @@ class Scan extends BaseController
         $jam = date('H:i:s');
         $cek_peserta = $this->scanModel->cek_peserta($input_nim);
 
+        $jam_masuk = ['start' => '06:30:00', 'end' => '08:00:00'];
+        $jam_pulang = ['start' => '16:00:00', 'end' => '17:30:00'];
+
+        $jam_absen = [
+            'jam_masuk' => $jam >= $jam_masuk['start'] && $jam <= $jam_masuk['end'] ? true : false,
+            'jam_pulang' => $jam >= $jam_pulang['start'] && $jam <= $jam_pulang['end'] ? true : false,
+        ];
+
         if ($cek_peserta) {
             $cek_kehadiran = $this->scanModel->cek_kehadiran($input_nim, $tgl);
-            if ($cek_kehadiran) {
-                if ($cek_kehadiran->jam_keluar == '00:00:00') {
-                    $data = [
-                        'id_status' => 2,
-                        'jam_keluar' => $jam
-                    ];
-                    $this->scanModel->absen_pulang($input_nim, $data);
-                    session()->setFlashdata('pesan', 'Absen Pulang Berhasil');
-                    session()->setFlashdata('success', 'Absen Pulang Berhasil');
-                    return redirect()->to(base_url('scan'));
-                } else {
-                    session()->setFlashdata('pesan', 'Anda Sudah Absen Pulang');
-                    session()->setFlashdata('success', 'Anda sudah Absen Pulang');
-                    return redirect()->to(base_url('scan'));
-                }
-            } else {
-                $data = [
-                    'id_kehadiran' => 1,
-                    'id_status' => 1,
-                    'nim' => $input_nim,
-                    'tanggal' => $tgl,
-                    'jam_masuk' => $jam
-                ];
-                $this->scanModel->absen_masuk($data);
-                session()->setFlashdata('pesan', 'Absen Masuk Berhasil');
-                session()->setFlashdata('success', 'Absen Masuk Berhasil');
-                return redirect()->to(base_url('scan'));
+            switch ($jam_absen) {
+                case $jam_absen['jam_masuk']:
+                    if ($cek_kehadiran == false) {
+                        $data = [
+                            'id_kehadiran' => 1,
+                            'id_status' => 1,
+                            'nim' => $input_nim,
+                            'tanggal' => $tgl,
+                            'jam_masuk' => $jam,
+                        ];
+                        $this->scanModel->absen_masuk($data);
+                        return redirect()->to('/scan')->with('success', 'Absen masuk berhasil');
+                    } else {
+                        return redirect()->to('/scan')->with('error', 'Anda sudah absen masuk');
+                    }
+                    break;
+                case $jam_absen['jam_pulang']:
+                    if ($cek_kehadiran == true) {
+                        if ($cek_kehadiran->jam_keluar == '00:00:00') {
+                            $data = [
+                                'id_status' => 2,
+                                'jam_keluar' => $jam,
+                            ];
+                            $this->scanModel->absen_pulang($input_nim, $data);
+                            return redirect()->to('/scan')->with('success', 'Absen pulang berhasil');
+                        } else {
+                            return redirect()->to('/scan')->with('error', 'Anda sudah absen pulang');
+                        }
+                    } else {
+                        return redirect()->to('/scan')->with('error', 'Anda belum absen masuk');
+                    }
+                    break;
+                default:
+                    return redirect()->to('/scan')->with('error', 'Bukan Waktu Absen');
+                    break;
             }
         } else {
-            session()->setFlashdata('pesan', 'NIM Tidak Terdaftar');
-            session()->setFlashdata('error', 'NIM Tidak Terdaftar');
-            return redirect()->to(base_url('scan'));
+            return redirect()->to('/scan')->with('error', 'NIM Tidak Terdaftar');
         }
     }
 }
