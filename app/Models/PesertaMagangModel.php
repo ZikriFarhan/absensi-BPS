@@ -17,8 +17,8 @@ class PesertaMagangModel extends Model
     protected $validationRules      = [
         'id_bidang'     => 'required|numeric',
         'id_universitas' => 'required|numeric',
-        'nama'          => 'required', 
-        'nim'           => 'required|numeric|is_unique[pesertamagang.nim,id,{id}]',  
+        'nama'          => 'required',
+        'nim'           => 'required|is_unique[pesertamagang.nim,id,{id}]',
     ];
     protected $validationMessages   = [
         'id_bidang'     => [
@@ -35,7 +35,6 @@ class PesertaMagangModel extends Model
         ],
         'nim'           => [
             'required' => 'NIM harus diisi',
-            'numeric' => 'NIM harus angka',
             'is_unique' => 'NIM sudah terdaftar'
         ],
     ];
@@ -81,7 +80,7 @@ class PesertaMagangModel extends Model
         $builder->where('pesertamagang.id', $id);
         $builder->join('bidang', 'bidang.id = pesertamagang.id_bidang', 'inner');
         $builder->join('universitas', 'universitas.id = pesertamagang.id_universitas', 'inner');
-        $query = $builder->get()->getResultArray();
+        $query = $builder->get()->getRowArray();
         return $query;
     }
 }

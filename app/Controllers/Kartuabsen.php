@@ -19,7 +19,8 @@ class Kartuabsen extends BaseController
     {
         $data = [
             'title' => 'Ambil QR',
-            'isi'   => 'kartuabsen/index'
+            'isi'   => 'kartuabsen/index',
+            'data'  => $this->pesertaMagang->findAll()
         ];
         echo view('layout_admin/v_wrapper', $data);
     }
@@ -39,17 +40,5 @@ class Kartuabsen extends BaseController
         } else {
             return redirect()->to('/kartuabsen')->with('error', 'Data tidak ditemukan');
         }
-    }
-
-    public function getPeserta()
-    {
-        $keyword = $this->request->getVar('keyword');
-        if ($keyword) {
-            $peserta = $this->pesertaMagang->like('nama', $keyword)->findAll();
-        } else {
-            $peserta = $this->pesertaMagang->findAll();
-        }
-        $query = $peserta;
-        return json_encode($query);
     }
 }
