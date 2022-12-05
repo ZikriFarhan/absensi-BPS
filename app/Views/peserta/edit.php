@@ -40,25 +40,24 @@
 
                 <div class="form-group">
                     <label for="id_universitas">Universitas</label>
-                    <select class="form-control selectpicker" id="id_universitas" name="id_universitas">
+
+                    <select class="form-control" id="id_universitas" name="id_universitas" title="Pilih Universitas">
                         <option placeholder="" value="<?= $peserta['id_universitas'] ?>">Pilih Universitas</option>
                         <?php foreach ($univ as $row) : ?>
-                            <option value="<?= $row['id']; ?>"><?= $row['nama_universitas']; ?></option>
+                            <option value="<?= $row['id']; ?>" <?= ($peserta['id_universitas'] == $row['id']) ? "selected" : ""; ?>><?= $row['nama_universitas']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="id_bidang">Bidang</label>
-                    <select class="form-control selectpicker" id="id_bidang" name="id_bidang">
-                        <option placeholder="" value="<?= $peserta['id_bidang'] ?>">Pilih Bidang</option>
+                    <select class="form-control" id="id_bidang" name="id_bidang">
                         <?php foreach ($bidang as $row) : ?>
-                            <option value="<?= $row['id']; ?>"><?= $row['nama_bidang']; ?></option>
+                            <option value="<?= $row['id']; ?>" <?= ($peserta['id_bidang'] == $row['id']) ? "selected" : ""; ?>><?= $row['nama_bidang']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Tambah</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         </div>
     </div>
@@ -68,6 +67,18 @@
 <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('select').selectpicker({
+            liveSearch: true,
+            liveSearchPlaceholder: 'Search',
+            size: 5,
+            style: 'border'
+        });
+    });
+</script>
+
 
 <script>
     $(document).ready(function() {

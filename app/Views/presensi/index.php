@@ -72,7 +72,7 @@
                 </form>
                 <?php if (session('role') === 'admin') : ?>
                     <a href="/presensi/new" class="btn btn-primary mb-2">Tambah</a>
-                    <a href="/presensi/rekappresensi_harian" class="btn btn-danger mb-2 ml-2">Tutup Presensi Hari ini</a>
+                    <a href="/presensi/rekappresensi_harian" class="btn btn-success mb-2 ml-2">Rekap Presensi Harian</a>
                 <?php endif ?>
 
             </div><!-- /.col -->

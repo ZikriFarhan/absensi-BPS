@@ -236,7 +236,6 @@ class Presensi extends BaseController
         } else {
             return redirect()->to('/presensi')->with('error', 'Rekap Presensi Harian Gagal, sekarang hari libur');
         }
-    }
 
     public function export_excel()
     {
