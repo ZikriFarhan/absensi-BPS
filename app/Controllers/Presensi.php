@@ -111,7 +111,6 @@ class Presensi extends BaseController
             $data = [
                 'title' => 'Form Edit Presensi',
                 'data' => $this->presensiModel->getID($id),
-                'peserta' => $this->pesertaModel->findAll(),
                 'status' => $this->statusModel->findAll(),
                 'kehadiran' => $this->kehadiranModel->findAll(),
                 'isi' => 'presensi/edit'
@@ -197,113 +196,155 @@ class Presensi extends BaseController
         }
     }
 
+
+    public function rekappresensi_harian()
+    {
+        $scanModel = model('ScanModel');
+        $date = date('Y-m-d');
+        $peserta = $this->pesertaModel->findAll();
+        $nim = [];
+        foreach ($peserta as $p) {
+            $nim[] = $p['nim'];
+        }
+        if (date('D') != 'Sun' && date('D') != 'Sat') {
+            foreach ($nim as $n) {
+                $cek_absen = $scanModel->cek_kehadiran($n, $date);
+                if ($cek_absen) {
+                    if ($cek_absen->jam_keluar == '00:00:00' && $cek_absen->id_status == 1) {
+                        $id_presensi = $cek_absen->id;
+                        $data = [
+                            'id_kehadiran' => 4,
+                            'id_status' => 3,
+                            'keterangan' => 'Tidak Absen Pulang',
+                        ];
+                        $this->presensiModel->update($id_presensi, $data) ? $this->log_to_console('Berhasil') : $this->log_to_console('Gagal');
+                    }
+                } else {
+                    $data = [
+                        'id_kehadiran' => 4,
+                        'id_status' => 3,
+                        'nim' => $n,
+                        'tanggal' => $date,
+                        'jam_masuk' => '00:00:00',
+                        'jam_keluar' => '00:00:00',
+                        'keterangan' => 'Tidak Ada Keterangan',
+                    ];
+                    $this->presensiModel->insert($data) ? $this->log_to_console('Berhasil') : $this->log_to_console('Gagal');
+                }
+            }
+            return redirect()->to('/presensi')->with('success', 'Rekap Presensi Harian Berhasil');
+        } else {
+            return redirect()->to('/presensi')->with('error', 'Rekap Presensi Harian Gagal, sekarang hari libur');
+        }
+    }
+
     public function export_excel()
     {
-    $data = $this->presensiModel->getAll();
+        $data = $this->presensiModel->getAll();
 
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-    // mengatur alignment dan border
-    $styleColumn = [
-        'alignment' => [
-            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-        ],
-    ];
-    // 
-    $borderArray = [
-        'borders' => [
-            'top' => [
-                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        // mengatur alignment dan border
+        $styleColumn = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
-            'bottom' => [
-                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-            ],
-            'left' => [
-                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-            ],
-            'right' => [
-                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-            ],
-        ]
-    ];
-    $sheet->getStyle('A1')->getFont()->setBold(true);
+        ];
+        // 
+        $borderArray = [
+            'borders' => [
+                'top' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+                'bottom' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+                'left' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+                'right' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ]
+        ];
+        $sheet->getStyle('A1')->getFont()->setBold(true);
 
-    $sheet->getStyle('A3')->applyFromArray($styleColumn);
-    $sheet->getStyle('B3')->applyFromArray($styleColumn);
-    $sheet->getStyle('C3')->applyFromArray($styleColumn);
-    $sheet->getStyle('D3')->applyFromArray($styleColumn);
-    $sheet->getStyle('E3')->applyFromArray($styleColumn);
-    $sheet->getStyle('F3')->applyFromArray($styleColumn);
-    $sheet->getStyle('G3')->applyFromArray($styleColumn);
-    $sheet->getStyle('H3')->applyFromArray($styleColumn);
+        $sheet->getStyle('A3')->applyFromArray($styleColumn);
+        $sheet->getStyle('B3')->applyFromArray($styleColumn);
+        $sheet->getStyle('C3')->applyFromArray($styleColumn);
+        $sheet->getStyle('D3')->applyFromArray($styleColumn);
+        $sheet->getStyle('E3')->applyFromArray($styleColumn);
+        $sheet->getStyle('F3')->applyFromArray($styleColumn);
+        $sheet->getStyle('G3')->applyFromArray($styleColumn);
+        $sheet->getStyle('H3')->applyFromArray($styleColumn);
 
-    $sheet->getStyle('A3')->applyFromArray($borderArray);
-    $sheet->getStyle('B3')->applyFromArray($borderArray);
-    $sheet->getStyle('C3')->applyFromArray($borderArray);
-    $sheet->getStyle('D3')->applyFromArray($borderArray);
-    $sheet->getStyle('E3')->applyFromArray($borderArray);
-    $sheet->getStyle('F3')->applyFromArray($borderArray);
-    $sheet->getStyle('G3')->applyFromArray($borderArray);
-    $sheet->getStyle('H3')->applyFromArray($borderArray);
-    
+        $sheet->getStyle('A3')->applyFromArray($borderArray);
+        $sheet->getStyle('B3')->applyFromArray($borderArray);
+        $sheet->getStyle('C3')->applyFromArray($borderArray);
+        $sheet->getStyle('D3')->applyFromArray($borderArray);
+        $sheet->getStyle('E3')->applyFromArray($borderArray);
+        $sheet->getStyle('F3')->applyFromArray($borderArray);
+        $sheet->getStyle('G3')->applyFromArray($borderArray);
+        $sheet->getStyle('H3')->applyFromArray($borderArray);
 
 
-    $spreadsheet->setActiveSheetIndex(0)
-                ->setCellValue('A1', "Rekap Absensi PKL")
-                ->mergeCells('A1:D1')
-                ->setCellValue('A3', "No")
-                ->setCellValue('B3', "Nama")
-                ->setCellValue('C3', "Tanggal")
-                ->setCellValue('D3', "Jam Masuk")
-                ->setCellValue('E3', "Jam Keluar")
-                ->setCellValue('F3', "Kehadiran")
-                ->setCellValue('G3', "Keterangan")
-                ->setCellValue('H3', "Status");
-    
-    $column = 4;
-    // tulis data mobil ke cell
-    $i = 1;
-    foreach($data as $data) {
+
         $spreadsheet->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $column, $i++)
-                    ->setCellValue('B' . $column, $data['nama'])
-                    ->setCellValue('C' . $column, $data['tanggal'])
-                    ->setCellValue('D' . $column, $data['jam_masuk'])
-                    ->setCellValue('E' . $column, $data['jam_keluar'])
-                    ->setCellValue('F' . $column, $data['nama_kehadiran'])
-                    ->setCellValue('G' . $column, $data['keterangan'])
-                    ->setCellValue('H' . $column, $data['nama_status']);
+            ->setCellValue('A1', "Rekap Absensi PKL")
+            ->mergeCells('A1:D1')
+            ->setCellValue('A3', "No")
+            ->setCellValue('B3', "Nama")
+            ->setCellValue('C3', "Tanggal")
+            ->setCellValue('D3', "Jam Masuk")
+            ->setCellValue('E3', "Jam Keluar")
+            ->setCellValue('F3', "Kehadiran")
+            ->setCellValue('G3', "Keterangan")
+            ->setCellValue('H3', "Status");
 
-    $sheet->getStyle('A' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('B' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('C' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('D' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('E' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('F' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('G' . $column)->applyFromArray($borderArray);
-    $sheet->getStyle('H' . $column)->applyFromArray($borderArray);
+        $column = 4;
+        // tulis data mobil ke cell
+        $i = 1;
+        foreach ($data as $data) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $i++)
+                ->setCellValue('B' . $column, $data['nama'])
+                ->setCellValue('C' . $column, $data['tanggal'])
+                ->setCellValue('D' . $column, $data['jam_masuk'])
+                ->setCellValue('E' . $column, $data['jam_keluar'])
+                ->setCellValue('F' . $column, $data['nama_kehadiran'])
+                ->setCellValue('G' . $column, $data['keterangan'])
+                ->setCellValue('H' . $column, $data['nama_status']);
 
-    $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-    $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+            $sheet->getStyle('A' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('B' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('C' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('D' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('E' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('F' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('G' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('H' . $column)->applyFromArray($borderArray);
 
-        $column++;
-    }
-    // tulis dalam format .xlsx
-    $writer = new Xlsx($spreadsheet);
-    $fileName = 'Rekap PKL BPS Jateng';
+            $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 
-    // Redirect hasil generate xlsx ke web client
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename='.$fileName.'.xlsx');
-    header('Cache-Control: max-age=0');
+            $column++;
+        }
+        // tulis dalam format .xlsx
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Rekap PKL BPS Jateng';
 
-    $writer->save('php://output');
+        // Redirect hasil generate xlsx ke web client
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
 }
