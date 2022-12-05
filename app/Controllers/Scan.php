@@ -137,5 +137,6 @@ class Scan extends BaseController
             }
         } else {
             $this->log_to_console('Belum Waktu Tutup Presensi');
+        }
     }
 }
