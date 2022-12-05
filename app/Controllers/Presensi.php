@@ -203,8 +203,51 @@ class Presensi extends BaseController
 
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
-    // tulis header/nama kolom 
+    // mengatur alignment dan border
+    $styleColumn = [
+        'alignment' => [
+            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+        ],
+    ];
+    // 
+    $borderArray = [
+        'borders' => [
+            'top' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            ],
+            'bottom' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            ],
+            'left' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            ],
+            'right' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            ],
+        ]
+    ];
     $sheet->getStyle('A1')->getFont()->setBold(true);
+
+    $sheet->getStyle('A3')->applyFromArray($styleColumn);
+    $sheet->getStyle('B3')->applyFromArray($styleColumn);
+    $sheet->getStyle('C3')->applyFromArray($styleColumn);
+    $sheet->getStyle('D3')->applyFromArray($styleColumn);
+    $sheet->getStyle('E3')->applyFromArray($styleColumn);
+    $sheet->getStyle('F3')->applyFromArray($styleColumn);
+    $sheet->getStyle('G3')->applyFromArray($styleColumn);
+    $sheet->getStyle('H3')->applyFromArray($styleColumn);
+
+    $sheet->getStyle('A3')->applyFromArray($borderArray);
+    $sheet->getStyle('B3')->applyFromArray($borderArray);
+    $sheet->getStyle('C3')->applyFromArray($borderArray);
+    $sheet->getStyle('D3')->applyFromArray($borderArray);
+    $sheet->getStyle('E3')->applyFromArray($borderArray);
+    $sheet->getStyle('F3')->applyFromArray($borderArray);
+    $sheet->getStyle('G3')->applyFromArray($borderArray);
+    $sheet->getStyle('H3')->applyFromArray($borderArray);
+    
+
 
     $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue('A1', "Rekap Absensi PKL")
@@ -231,6 +274,24 @@ class Presensi extends BaseController
                     ->setCellValue('F' . $column, $data['nama_kehadiran'])
                     ->setCellValue('G' . $column, $data['keterangan'])
                     ->setCellValue('H' . $column, $data['nama_status']);
+
+    $sheet->getStyle('A' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('B' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('C' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('D' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('E' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('F' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('G' . $column)->applyFromArray($borderArray);
+    $sheet->getStyle('H' . $column)->applyFromArray($borderArray);
+
+    $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+    $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 
         $column++;
     }
