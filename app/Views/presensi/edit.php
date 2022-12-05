@@ -1,5 +1,11 @@
 <style>
+
     .form-group {}
+    .bootstrap-select>.dropdown-toggle{
+    background-color:white;
+    border-color:#ced4da;
+    }
+
 </style>
 
 

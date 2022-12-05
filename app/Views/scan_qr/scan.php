@@ -10,6 +10,7 @@
             showConfirmButton: true,
         })
     </script>
+
 <?php }  ?>
 
 <?php if (session()->getFlashData('success')) { ?>

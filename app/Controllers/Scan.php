@@ -136,6 +136,32 @@ class Scan extends BaseController
             }
         } else {
             $this->log_to_console('Belum Waktu Tutup Presensi');
+                    $this->scanModel->absen_pulang($input_nim, $data);
+                    session()->setFlashdata('pesan', 'Absen Pulang Berhasil');
+                    session()->setFlashdata('success', 'Absen Pulang Berhasil');
+                    return redirect()->to(base_url('scan'));
+                } else {
+                    session()->setFlashdata('pesan', 'Anda Sudah Absen Pulang');
+                    session()->setFlashdata('success', 'Anda sudah Absen Pulang');
+                    return redirect()->to(base_url('scan'));
+                }
+            } else {
+                $data = [
+                    'id_kehadiran' => 1,
+                    'id_status' => 1,
+                    'nim' => $input_nim,
+                    'tanggal' => $tgl,
+                    'jam_masuk' => $jam
+                ];
+                $this->scanModel->absen_masuk($data);
+                session()->setFlashdata('pesan', 'Absen Masuk Berhasil');
+                session()->setFlashdata('success', 'Absen Masuk Berhasil');
+                return redirect()->to(base_url('scan'));
+            }
+        } else {
+            session()->setFlashdata('pesan', 'NIM Tidak Terdaftar');
+            session()->setFlashdata('error', 'NIM Tidak Terdaftar');
+            return redirect()->to(base_url('scan'));
         }
     }
 }

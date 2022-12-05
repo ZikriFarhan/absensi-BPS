@@ -9,10 +9,10 @@
         "codeigniter4/framework": "^4.0",
         "endroid/qr-code": "^4.6",
         "codeigniter4/shield": "dev-develop",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "phpoffice/phpspreadsheet": "^1.25"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9",
         "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^9.1"
     },

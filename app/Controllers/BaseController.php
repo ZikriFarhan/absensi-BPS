@@ -48,7 +48,9 @@ abstract class BaseController extends Controller
 	{
 		$this->helpers = array_merge($this->helpers, ['setting', 'form']);
 
-		// Do Not Edit This Line
+		$this->helpers = array_merge($this->helpers, ['setting']);
+
+        // Do Not Edit This Line
 		parent::initController($request, $response, $logger);
 
 		//--------------------------------------------------------------------
