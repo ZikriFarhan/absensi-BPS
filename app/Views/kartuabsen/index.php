@@ -37,7 +37,7 @@
 
 <script>
     $(document).ready(function() {
-        $('select').selectpicker({
+        $('selectpicker').selectpicker({
             liveSearch: true,
             liveSearchPlaceholder: 'Search',
             size: 5,

@@ -63,6 +63,18 @@ class PresensiModel extends Model
         return $query;
     }
 
+    function getByNim($nim)
+    {
+        $builder = $this->table('presensi');
+        $builder->select('presensi.*, kehadiran.nama_kehadiran, status.nama_status, pesertamagang.nama');
+        $builder->join('kehadiran', 'kehadiran.id = presensi.id_kehadiran', 'inner');
+        $builder->join('status', 'status.id = presensi.id_status', 'inner');
+        $builder->join('pesertamagang', 'pesertamagang.nim = presensi.nim', 'inner');
+        $builder->where('presensi.nim', $nim);
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+
     function getID($id)
     {
         $builder = $this->table('presensi');

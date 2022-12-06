@@ -10,11 +10,6 @@ class Scan extends BaseController
     public function __construct()
     {
         $this->scanModel = new ScanModel();
-        if (date('D') != 'Sun' && date('D') != 'Sat') {
-            $this->absensi_harian();
-        } else {
-            $this->log_to_console('Hari ini adalah hari libur');
-        }
         helper('form');
     }
 
@@ -40,8 +35,8 @@ class Scan extends BaseController
         $jam = date('H:i:s');
         $cek_peserta = $this->scanModel->cek_peserta($input_nim);
 
-        $jam_masuk = ['start' => '06:30:00', 'end' => '08:00:00'];
-        $jam_pulang = ['start' => '16:00:00', 'end' => '17:30:00'];
+        $jam_masuk = ['start' => '06:30:00', 'end' => '09:00:00'];
+        $jam_pulang = ['start' => '15:30:00', 'end' => '18:00:00'];
 
         $jam_absen = [
             'jam_masuk' => $jam >= $jam_masuk['start'] && $jam <= $jam_masuk['end'] ? true : false,
@@ -89,54 +84,6 @@ class Scan extends BaseController
             }
         } else {
             return redirect()->to('/scan')->with('error', 'NIM Tidak Terdaftar');
-        }
-    }
-
-    private function absensi_harian()
-    {
-        $pesertaModel = model('PesertaMagangModel');
-        $scanModel = model('ScanModel');
-        $presensiModel = model('PresensiModel');
-        $date = date('Y-m-d');
-        $jam = date('H:i:s');
-        $peserta = $pesertaModel->findAll();
-        $nim = [];
-        foreach ($peserta as $p) {
-            $nim[] = $p['nim'];
-        }
-        if ($jam >= '17:30:00' && $jam <= '23:59:59') {
-            $this->log_to_console('Pada Tanggal: ' . $date);
-            foreach ($nim as $n) {
-                $cek_absen = $scanModel->cek_kehadiran($n, $date);
-                if ($cek_absen) {
-                    if ($cek_absen->jam_keluar == '00:00:00' && $cek_absen->id_status == 1) {
-                        $id_presensi = $cek_absen->id;
-                        $data = [
-                            'id_kehadiran' => 4,
-                            'id_status' => 3,
-                            'keterangan' => 'Tidak Absen Pulang',
-                        ];
-                        $presensiModel->update($id_presensi, $data) ? $this->log_to_console('Berhasil') : $this->log_to_console('Gagal');
-                        $this->log_to_console('NIM : ' . $n . ' | Status : Belum Absen Keluar');
-                    } else {
-                        $this->log_to_console('NIM : ' . $n . ' | Status : Sudah Absen');
-                    }
-                } else {
-                    $data = [
-                        'id_kehadiran' => 4,
-                        'id_status' => 3,
-                        'nim' => $n,
-                        'tanggal' => $date,
-                        'jam_masuk' => '00:00:00',
-                        'jam_keluar' => '00:00:00',
-                        'keterangan' => 'Tidak Ada Keterangan',
-                    ];
-                    $presensiModel->insert($data) ? $this->log_to_console('Berhasil') : $this->log_to_console('Gagal');
-                    $this->log_to_console('NIM : ' . $n . ' | Status : Belum Absen');
-                }
-            }
-        } else {
-            $this->log_to_console('Belum Waktu Tutup Presensi');
         }
     }
 }

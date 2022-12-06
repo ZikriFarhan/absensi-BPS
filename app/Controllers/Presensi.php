@@ -196,11 +196,22 @@ class Presensi extends BaseController
         }
     }
 
+    public function tutupAbsen()
+    {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
+        $data = [
+            'title' => 'Form Tutup Presensi',
+            'isi' => 'presensi/tutuppresensi'
+        ];
+        echo view('layout_admin/v_wrapper', $data);
+    }
 
     public function rekappresensi_harian()
     {
         $scanModel = model('ScanModel');
-        $date = date('Y-m-d');
+        $date = $this->request->getPost('tanggal');
         $peserta = $this->pesertaModel->findAll();
         $nim = [];
         foreach ($peserta as $p) {
@@ -238,9 +249,28 @@ class Presensi extends BaseController
         }
     }
 
+    public function rekap()
+    {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
+        $data = [
+            'title' => 'Rekap Data Presensi',
+            'isi' => 'presensi/rekap',
+            'peserta' => $this->pesertaModel->findAll(),
+        ];
+        echo view('layout_admin/v_wrapper', $data);
+    }
+
     public function export_excel()
     {
-        $data = $this->presensiModel->getAll();
+        $getByName = $this->request->getPost('getByName');
+        if ($getByName == '1') {
+            $nim = $this->request->getPost('nim');
+            $data = $this->presensiModel->getByNim($nim);
+        } else {
+            $data = $this->presensiModel->getAll();
+        }
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -336,6 +366,7 @@ class Presensi extends BaseController
 
             $column++;
         }
+
         // tulis dalam format .xlsx
         $writer = new Xlsx($spreadsheet);
         $fileName = 'Rekap PKL BPS Jateng';
@@ -345,6 +376,8 @@ class Presensi extends BaseController
         header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
         header('Cache-Control: max-age=0');
 
+        ob_end_clean();
         $writer->save('php://output');
+        die;
     }
 }
