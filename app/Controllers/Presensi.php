@@ -236,6 +236,7 @@ class Presensi extends BaseController
         } else {
             return redirect()->to('/presensi')->with('error', 'Rekap Presensi Harian Gagal, sekarang hari libur');
         }
+    }
 
     public function export_excel()
     {
@@ -247,7 +248,7 @@ class Presensi extends BaseController
         $styleColumn = [
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
         // 
@@ -276,7 +277,7 @@ class Presensi extends BaseController
         $sheet->getStyle('E3')->applyFromArray($styleColumn);
         $sheet->getStyle('F3')->applyFromArray($styleColumn);
         $sheet->getStyle('G3')->applyFromArray($styleColumn);
-        $sheet->getStyle('H3')->applyFromArray($styleColumn);
+
 
         $sheet->getStyle('A3')->applyFromArray($borderArray);
         $sheet->getStyle('B3')->applyFromArray($borderArray);
@@ -285,7 +286,7 @@ class Presensi extends BaseController
         $sheet->getStyle('E3')->applyFromArray($borderArray);
         $sheet->getStyle('F3')->applyFromArray($borderArray);
         $sheet->getStyle('G3')->applyFromArray($borderArray);
-        $sheet->getStyle('H3')->applyFromArray($borderArray);
+
 
 
 
@@ -298,8 +299,7 @@ class Presensi extends BaseController
             ->setCellValue('D3', "Jam Masuk")
             ->setCellValue('E3', "Jam Keluar")
             ->setCellValue('F3', "Kehadiran")
-            ->setCellValue('G3', "Keterangan")
-            ->setCellValue('H3', "Status");
+            ->setCellValue('G3', "Keterangan");
 
         $column = 4;
         // tulis data mobil ke cell
@@ -312,8 +312,8 @@ class Presensi extends BaseController
                 ->setCellValue('D' . $column, $data['jam_masuk'])
                 ->setCellValue('E' . $column, $data['jam_keluar'])
                 ->setCellValue('F' . $column, $data['nama_kehadiran'])
-                ->setCellValue('G' . $column, $data['keterangan'])
-                ->setCellValue('H' . $column, $data['nama_status']);
+                ->setCellValue('G' . $column, $data['keterangan']);
+
 
             $sheet->getStyle('A' . $column)->applyFromArray($borderArray);
             $sheet->getStyle('B' . $column)->applyFromArray($borderArray);
@@ -322,7 +322,7 @@ class Presensi extends BaseController
             $sheet->getStyle('E' . $column)->applyFromArray($borderArray);
             $sheet->getStyle('F' . $column)->applyFromArray($borderArray);
             $sheet->getStyle('G' . $column)->applyFromArray($borderArray);
-            $sheet->getStyle('H' . $column)->applyFromArray($borderArray);
+
 
             $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
             $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -331,10 +331,34 @@ class Presensi extends BaseController
             $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
             $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
             $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-            $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+ 
 
             $column++;
         }
+
+            $column = $column + 2;
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('F' . $column, "Mengetahui,");
+            $sheet->mergeCells('F' . $column. ':G' .   $column);
+            $sheet->getStyle('F' . $column. ':G' .   $column)->getAlignment()->setHorizontal('center');
+
+            $column = $column + 1;
+            $sheet->setCellValue('F' . $column, "Kepala Kepegawaian");
+            $sheet->mergeCells('F' . $column. ':G' .   $column);
+            $sheet->getStyle('F' . $column. ':G' .   $column)->getAlignment()->setHorizontal('center');
+
+            $column = $column + 5;
+            $sheet->setCellValue('F' . $column, "M.Sobirin");
+            $sheet->mergeCells('F' . $column. ':G' .   $column);
+            $sheet->getStyle('F' . $column. ':G' .   $column)->getAlignment()->setHorizontal('center');
+
+            $column = $column + 1;
+            $sheet->setCellValue('F' . $column, "NIP.");
+            $sheet->mergeCells('F' . $column. ':G' .   $column);
+            $sheet->getStyle('F' . $column. ':G' .   $column)->getAlignment()->setHorizontal('center');
+
+
+
         // tulis dalam format .xlsx
         $writer = new Xlsx($spreadsheet);
         $fileName = 'Rekap PKL BPS Jateng';
