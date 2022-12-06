@@ -22,7 +22,7 @@
                     <h2>Ambil QR</h2>
                     <p>Masukkan Nama</p>
                     <div class="form-group">
-                        <select name="id_peserta" id="peserta" class="form-control" title="Cari Nama Mahasiswa">
+                        <select name="id_peserta" id="peserta" class="form-control selectpicker" data-live-search="true" title="Cari Nama Mahasiswa">
                             <?php foreach ($data as $row) : ?>
                                 <option value="<?= $row['id'] ?>"><?= $row['nama'] ?></option>
                             <?php endforeach; ?>
@@ -37,7 +37,7 @@
 
 <script>
     $(document).ready(function() {
-        $('select').selectpicker({
+        $('selectpicker').selectpicker({
             liveSearch: true,
             liveSearchPlaceholder: 'Search',
             size: 5,

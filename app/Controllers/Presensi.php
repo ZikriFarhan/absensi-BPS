@@ -196,11 +196,22 @@ class Presensi extends BaseController
         }
     }
 
+    public function tutupAbsen()
+    {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
+        $data = [
+            'title' => 'Form Tutup Presensi',
+            'isi' => 'presensi/tutuppresensi'
+        ];
+        echo view('layout_admin/v_wrapper', $data);
+    }
 
     public function rekappresensi_harian()
     {
         $scanModel = model('ScanModel');
-        $date = date('Y-m-d');
+        $date = $this->request->getPost('tanggal');
         $peserta = $this->pesertaModel->findAll();
         $nim = [];
         foreach ($peserta as $p) {
@@ -238,9 +249,29 @@ class Presensi extends BaseController
         }
     }
 
+    public function rekap()
+    {
+        if (!auth()->user()->inGroup('admin')) {
+            return redirect()->to('/home')->with('error', 'Anda tidak memiliki akses ke halaman tersebut');
+        }
+        $data = [
+            'title' => 'Rekap Data Presensi',
+            'isi' => 'presensi/rekap',
+            'peserta' => $this->pesertaModel->findAll(),
+        ];
+        echo view('layout_admin/v_wrapper', $data);
+    }
+
     public function export_excel()
     {
-        $data = $this->presensiModel->getAll();
+        $getByName = $this->request->getPost('getByName');
+        if ($getByName == '1') {
+            $nim = $this->request->getPost('nim');
+            $data = $this->presensiModel->getByNim($nim);
+        } else {
+            $data = $this->presensiModel->getAll();
+        }
+
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -277,6 +308,7 @@ class Presensi extends BaseController
         $sheet->getStyle('E3')->applyFromArray($styleColumn);
         $sheet->getStyle('F3')->applyFromArray($styleColumn);
         $sheet->getStyle('G3')->applyFromArray($styleColumn);
+        $sheet->getStyle('H3')->applyFromArray($styleColumn);
 
 
         $sheet->getStyle('A3')->applyFromArray($borderArray);
@@ -286,8 +318,7 @@ class Presensi extends BaseController
         $sheet->getStyle('E3')->applyFromArray($borderArray);
         $sheet->getStyle('F3')->applyFromArray($borderArray);
         $sheet->getStyle('G3')->applyFromArray($borderArray);
-
-
+        $sheet->getStyle('H3')->applyFromArray($borderArray);
 
 
         $spreadsheet->setActiveSheetIndex(0)
@@ -300,6 +331,8 @@ class Presensi extends BaseController
             ->setCellValue('E3', "Jam Keluar")
             ->setCellValue('F3', "Kehadiran")
             ->setCellValue('G3', "Keterangan");
+            ->setCellValue('H3', "Status");
+
 
         $column = 4;
         // tulis data mobil ke cell
@@ -312,8 +345,8 @@ class Presensi extends BaseController
                 ->setCellValue('D' . $column, $data['jam_masuk'])
                 ->setCellValue('E' . $column, $data['jam_keluar'])
                 ->setCellValue('F' . $column, $data['nama_kehadiran'])
-                ->setCellValue('G' . $column, $data['keterangan']);
-
+                ->setCellValue('G' . $column, $data['keterangan'])
+                ->setCellValue('H' . $column, $data['nama_status']);
 
             $sheet->getStyle('A' . $column)->applyFromArray($borderArray);
             $sheet->getStyle('B' . $column)->applyFromArray($borderArray);
@@ -322,6 +355,7 @@ class Presensi extends BaseController
             $sheet->getStyle('E' . $column)->applyFromArray($borderArray);
             $sheet->getStyle('F' . $column)->applyFromArray($borderArray);
             $sheet->getStyle('G' . $column)->applyFromArray($borderArray);
+            $sheet->getStyle('H' . $column)->applyFromArray($borderArray);
 
 
             $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -331,7 +365,7 @@ class Presensi extends BaseController
             $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
             $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
             $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
- 
+            $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 
             $column++;
         }
@@ -357,8 +391,6 @@ class Presensi extends BaseController
             $sheet->mergeCells('F' . $column. ':G' .   $column);
             $sheet->getStyle('F' . $column. ':G' .   $column)->getAlignment()->setHorizontal('center');
 
-
-
         // tulis dalam format .xlsx
         $writer = new Xlsx($spreadsheet);
         $fileName = 'Rekap PKL BPS Jateng';
@@ -368,6 +400,8 @@ class Presensi extends BaseController
         header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
         header('Cache-Control: max-age=0');
 
+        ob_end_clean();
         $writer->save('php://output');
+        die;
     }
 }

@@ -1,4 +1,3 @@
-<!--  -->
 <div class="container-fluid">
     <div class="content-header">
         <div class="container-fluid">
@@ -22,7 +21,7 @@
             <form action="/presensi/create" method="post">
                 <div class="form-group">
                     <label for="nim">Nama</label>
-                    <select class="form-control" id="nim" name="nim" title="Pilih Nama">
+                    <select class="form-control selectpicker" data-live-search="true" id="nim" name="nim" title="Pilih Nama">
                         <?php foreach ($peserta as $row) : ?>
                             <option value="<?= $row['nim']; ?>" <?= old('nim') == $row['nim'] ? "selected" : ""; ?>><?= $row['nama']; ?></option>
                         <?php endforeach; ?>
@@ -56,6 +55,7 @@
             </form>
         </div>
     </div>
+</div>
 </div>
 
 <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">

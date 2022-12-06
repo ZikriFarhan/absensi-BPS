@@ -15,25 +15,22 @@ class PresensiModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'id_kehadiran'  => 'required|is_not_unique[kehadiran.id]',
-        'id_status'     => 'required|is_not_unique[status.id]',
-        'nim'           => 'required|is_not_unique[pesertamagang.nim]',
+        'id_kehadiran'  => 'required',
+        'id_status'     => 'required',
+        'nim'           => 'required',
         'tanggal'       => 'required',
         'jam_masuk'     => 'required',
     ];
 
     protected $validationMessages   = [
         'id_kehadiran'  => [
-            'required' => 'id_kehadiran harus diisi',
-            'is_not_unique' => 'Kehadiran harus diisi'
+            'required' => 'Kehadiran harus diisi'
         ],
         'id_status'     => [
-            'required' => 'id_status harus diisi',
-            'is_not_unique' => 'Status harus diisi'
+            'required' => 'Status harus diisi'
         ],
         'nim'           => [
-            'required' => 'NIM harus diisi',
-            'is_not_unique' => 'Nama harus diisi'
+            'required' => 'Nama harus diisi'
         ],
         'tanggal'       => [
             'required' => 'Tanggal harus diisi'
@@ -66,6 +63,18 @@ class PresensiModel extends Model
         return $query;
     }
 
+    function getByNim($nim)
+    {
+        $builder = $this->table('presensi');
+        $builder->select('presensi.*, kehadiran.nama_kehadiran, status.nama_status, pesertamagang.nama');
+        $builder->join('kehadiran', 'kehadiran.id = presensi.id_kehadiran', 'inner');
+        $builder->join('status', 'status.id = presensi.id_status', 'inner');
+        $builder->join('pesertamagang', 'pesertamagang.nim = presensi.nim', 'inner');
+        $builder->where('presensi.nim', $nim);
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+
     function getID($id)
     {
         $builder = $this->table('presensi');
@@ -93,5 +102,4 @@ class PresensiModel extends Model
         $query = $builder->get()->getResultArray();
         return $query;
     }
-
 }

@@ -2,30 +2,27 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-0">
-                <h3>Edit Bidang</h3>
-                <?php if (session()->getFlashdata('error')) {
-                ?>
-                    <div class="alert alert-danger ml-auto">
+                <h3>Tutup Presensi</h3>
+                <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-danger" role="alert">
                         <ul>
                             <?php foreach (session()->getFlashdata('error') as $error) : ?>
                                 <li><?= $error ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
-                <?php } ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
     <div class="content">
         <div class="container-fluid">
-            <form action="/bidang/update/<?= $data['id']; ?>" method="post">
-
-                <div class="form-group">
-                    <label for="nama_bidang">Nama</label>
-                    <input type="text" class="form-control" id="nama_bidang" name="nama_bidang" value="<?= $data['nama_bidang']; ?>">
+            <form action="/presensi/rekappresensi_harian" method="post">
+                <div class="form-group" style="max-width:15% ;">
+                    <label for="Tanggal">Pilih Tanggal</label>
+                    <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="Masukkan Tanggal">
                 </div>
-
-                <button type="submit" class="btn btn-primary">Edit</button>
+                <button type="submit" class="btn btn-primary">Tambah</button>
             </form>
         </div>
     </div>

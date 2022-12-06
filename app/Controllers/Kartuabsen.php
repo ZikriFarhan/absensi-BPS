@@ -28,11 +28,10 @@ class Kartuabsen extends BaseController
 
     public function genKartu()
     {
-        $input = $this->request->getPost();
-        if ($input != null) {
+        $input = $this->request->getPost()['id_peserta'];
+        if ($input != "") {
             $data = $this->pesertaMagang->find($input['id_peserta']);
             $title = 'ambil qr';
-
             $writer = new PngWriter();
             $qrCode = QrCode::create($data['nim']);
             $result = $writer->write($qrCode, null, null);
