@@ -160,8 +160,6 @@ class Presensi extends BaseController
         }
     }
 
-
-
     public function delete($id)
     {
         if (!auth()->user()->inGroup('admin')) {
@@ -181,5 +179,42 @@ class Presensi extends BaseController
             ];
             echo view('errors/html/error_404', $data);
         }
+    }
+
+    public function rekappresensi_harian()
+    {
+        $scanModel = model('ScanModel');
+        $date = date('Y-m-d');
+        $peserta = $this->pesertaModel->findAll();
+        $nim = [];
+        foreach ($peserta as $p) {
+            $nim[] = $p['nim'];
+        }
+        foreach ($nim as $n) {
+            $cek_absen = $scanModel->cek_kehadiran($n, $date);
+            if ($cek_absen) {
+                if ($cek_absen->jam_keluar == '00:00:00' && $cek_absen->id_status == 1) {
+                    $id_presensi = $cek_absen->id;
+                    $data = [
+                        'id_kehadiran' => 4,
+                        'id_status' => 3,
+                        'keterangan' => 'Tidak Absen Pulang',
+                    ];
+                    $this->presensiModel->update($id_presensi, $data) ? $this->log_to_console('Berhasil') : $this->log_to_console('Gagal');
+                }
+            } else {
+                $data = [
+                    'id_kehadiran' => 4,
+                    'id_status' => 3,
+                    'nim' => $n,
+                    'tanggal' => $date,
+                    'jam_masuk' => '00:00:00',
+                    'jam_keluar' => '00:00:00',
+                    'keterangan' => 'Tidak Ada Keterangan',
+                ];
+                $this->presensiModel->insert($data) ? $this->log_to_console('Berhasil') : $this->log_to_console('Gagal');
+            }
+        }
+        return redirect()->to('/presensi')->with('success', 'Rekap Presensi Harian Berhasil');
     }
 }

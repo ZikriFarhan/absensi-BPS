@@ -49,6 +49,7 @@
                 <button onclick="window.print()" class="btn-sm btn-outline-secondary ml-auto mr-1" style="height:38px;">Cetak <i class="fa fa-print"></i></button>
                 <?php if (session('role') === 'admin') : ?>
                     <a href="/presensi/new" class="btn btn-primary mb-2">Tambah</a>
+                    <a href="/presensi/rekappresensi_harian" class="btn btn-success mb-2 ml-2">Rekap Presensi Harian</a>
                 <?php endif ?>
             </div><!-- /.col -->
         </div><!-- /.container-fluid -->

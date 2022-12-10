@@ -17,6 +17,7 @@
         Swal.fire({
             icon: 'success',
             title: '<?= session()->getFlashData('success') ?>',
+            timer: '3000',
             showConfirmButton: true,
         })
     </script>
